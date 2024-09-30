@@ -18,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import ciu.jwt.filter.JwtAuthFilter;
-import ciu.jwt.service.UserInfoService;
+import ProyectoCombustible.TP.filter.JwtAuthFilter;
+import ProyectoCombustible.TP.service.UserInfoService;
 
 @Configuration
 @EnableWebSecurity

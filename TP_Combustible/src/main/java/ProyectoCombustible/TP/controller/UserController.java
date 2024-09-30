@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ciu.jwt.model.UserInfo;
-import ciu.jwt.request.AuthRequest;
-import ciu.jwt.service.JwtService;
-import ciu.jwt.service.UserInfoService;
+import ProyectoCombustible.TP.model.UserInfo;
+import ProyectoCombustible.TP.request.AuthRequest;
+import ProyectoCombustible.TP.service.JwtService;
+import ProyectoCombustible.TP.service.UserInfoService;
+
+
 
 @RestController
 @RequestMapping("/auth")

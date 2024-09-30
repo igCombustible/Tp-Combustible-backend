@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import ciu.jwt.model.UserInfo;
-import ciu.jwt.repository.UserInfoRepository;
-import ciu.jwt.security.UserInfoDetails;
+import ProyectoCombustible.TP.Repository.UserInfoRepository;
+import ProyectoCombustible.TP.model.UserInfo;
+import ProyectoCombustible.TP.security.UserInfoDetails;
 
 @Service
 public class UserInfoService implements UserDetailsService {
