@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ProyectoCombustible.TP.model.UserInfo;
+import ProyectoCombustible.TP.model.Usuario;
 
 @Repository
-public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {
+public interface UserInfoRepository extends JpaRepository<Usuario, Integer> {
 
-	Optional<UserInfo> findByEmail(String email); // Use 'email' if that is the correct field for login
+	Optional<Usuario> findByEmail(String email); // Use 'email' if that is the correct field for login
 	
 }

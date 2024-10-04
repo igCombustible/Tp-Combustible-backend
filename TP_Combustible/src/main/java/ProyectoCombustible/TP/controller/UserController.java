@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ProyectoCombustible.TP.model.UserInfo;
+import ProyectoCombustible.TP.model.Usuario;
 import ProyectoCombustible.TP.request.AuthRequest;
 import ProyectoCombustible.TP.service.JwtService;
 import ProyectoCombustible.TP.service.UserInfoService;
-
-
 
 @RestController
 @RequestMapping("/auth")
@@ -38,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserInfo userInfo) {
+    public String addNewUser(@RequestBody Usuario userInfo) {
         return service.addUser(userInfo);
     }
 

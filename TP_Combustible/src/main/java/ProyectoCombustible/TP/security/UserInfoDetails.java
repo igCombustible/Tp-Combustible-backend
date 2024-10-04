@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import ProyectoCombustible.TP.model.UserInfo;
+import ProyectoCombustible.TP.model.Usuario;
 
 public class UserInfoDetails implements UserDetails {
 
@@ -18,12 +18,11 @@ public class UserInfoDetails implements UserDetails {
     private String password;
     private List<GrantedAuthority> authorities;
 
-    public UserInfoDetails(UserInfo userInfo) {
+    public UserInfoDetails(Usuario userInfo) {
         this.username = userInfo.getEmail(); // Assuming 'email' is used as 'username'
         this.password = userInfo.getPassword();
-        this.authorities = List.of(userInfo.getRoles().split(","))
-                .stream()
-                .map(SimpleGrantedAuthority::new)
+        this.authorities = userInfo.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name())) // obtiene el nombre del enum
                 .collect(Collectors.toList());
     }
 
