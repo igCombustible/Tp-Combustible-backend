@@ -21,8 +21,9 @@ public class UserInfoDetails implements UserDetails {
     public UserInfoDetails(Usuario userInfo) {
         this.username = userInfo.getEmail(); // Assuming 'email' is used as 'username'
         this.password = userInfo.getPassword();
-        this.authorities = userInfo.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name())) // obtiene el nombre del enum
+        this.authorities = userInfo.getRoles()
+                .stream()
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

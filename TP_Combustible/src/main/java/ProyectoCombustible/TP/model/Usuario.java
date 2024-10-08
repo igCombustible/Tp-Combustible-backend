@@ -1,17 +1,17 @@
 package ProyectoCombustible.TP.model;
 
-import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Usuario", schema = "combustible", indexes = {
-        @Index(name = "index_usuario_email", columnList = "email", unique = true) })
+@Table(name="Usuario", schema = "combustible")
 
 
 public class Usuario {
@@ -22,7 +22,11 @@ public class Usuario {
     private String name;
     private String email;
     private String password;
-    private List<Roles> roles;
+    
+    @OneToMany(mappedBy ="usuario" ,cascade= CascadeType.ALL)
+    private Set<String> roles;
+    
+    
 	public int getId() {
 		return id;
 	}
@@ -47,10 +51,10 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public List<Roles> getRoles() {
+	public Set<String> getRoles() {
 		return this.roles;
 	}
-	public void setRoles(List<Roles> roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 	
