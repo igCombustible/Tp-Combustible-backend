@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ProyectoCombustible.TP.Repository.UserInfoRepository;
 import ProyectoCombustible.TP.model.Usuario;
@@ -31,6 +32,7 @@ public class UserInfoService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
+    @Transactional
     public String addUser(Usuario userInfo) {
         // Encode password before saving the user
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));

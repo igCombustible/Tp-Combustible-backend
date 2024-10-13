@@ -1,9 +1,11 @@
 package ProyectoCombustible.TP.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,8 +25,10 @@ public class Usuario {
     private String email;
     private String password;
     
-    @OneToMany(mappedBy ="usuario" ,cascade= CascadeType.ALL)
-    private Set<String> roles;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UsuarioRoles> usuarioRoles = new HashSet<>();;
+
+    
     
     
 	public int getId() {
@@ -35,6 +39,18 @@ public class Usuario {
 	}
 	public String getName() {
 		return name;
+	}
+	
+	public Usuario() {
+	}
+	
+	public Usuario(int id, String name, String email, String password, Set<UsuarioRoles> usuarioRoles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.usuarioRoles = usuarioRoles;
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -51,11 +67,11 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Set<String> getRoles() {
-		return this.roles;
+	public Set<UsuarioRoles> getUsuarioRoles() {
+		return usuarioRoles;
 	}
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
+	public void setUsuarioRoles(Set<UsuarioRoles> usuarioRoles) {
+		this.usuarioRoles = usuarioRoles;
 	}
-	
+
 }

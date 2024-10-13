@@ -4,6 +4,7 @@ package ProyectoCombustible.TP.dto;
 import java.util.Set;
 
 import ProyectoCombustible.TP.model.Usuario;
+import ProyectoCombustible.TP.model.UsuarioRoles;
 
 
 
@@ -11,7 +12,7 @@ public class UsuarioDto {
 		protected String name;
 		protected String email;
 		protected String password;
-		protected Set<String> roles;
+		protected Set<UsuarioRoles> roles;
 		
 		
 		public String getEmail() {
@@ -36,6 +37,6 @@ public class UsuarioDto {
 	        this.email = usuario.getEmail();
 	        this.password = usuario.getPassword();
 	        this.name = usuario.getName();
-	        this.roles = usuario.getRoles();
+	        this.roles = usuario.getUsuarioRoles();
 	    }
 }

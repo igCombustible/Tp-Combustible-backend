@@ -21,9 +21,9 @@ public class UserInfoDetails implements UserDetails {
     public UserInfoDetails(Usuario userInfo) {
         this.username = userInfo.getEmail(); // Assuming 'email' is used as 'username'
         this.password = userInfo.getPassword();
-        this.authorities = userInfo.getRoles()
+        this.authorities = userInfo.getUsuarioRoles()
                 .stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(usuarioRol -> new SimpleGrantedAuthority(usuarioRol.getRol().getName()))
                 .collect(Collectors.toList());
     }
 
