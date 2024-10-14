@@ -8,13 +8,14 @@ CREATE TABLE combustible.usuario (
   email varchar(255) DEFAULT NULL,
   name varchar(255) DEFAULT NULL,
   password varchar(255) DEFAULT NULL,
-  roles varbinary(255) DEFAULT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY index_usuario_email (email)
 );
 
-INSERT into combustible.usuario(email,name,password,roles) 
-VALUES ('admin@gmail.com','admin','admin',"ROLE_ADMIN,ROLE_USER");
+INSERT into combustible.usuario(email,name,password) 
+VALUES ('admin@gmail.com','admin','admin');
+
+insert into combustible.usuario_roles(id, id_usuario, id_rol) values (1,1,2);
 
 CREATE TABLE combustible.roles (
 	id int(11) NOT NULL AUTO_INCREMENT,
@@ -38,3 +39,25 @@ VALUES('USER','usuario basico');
 
 INSERT into combustible.roles(name,description)
 VALUES('ADMIN','usuario con poderes');
+
+select * from combustible.roles r ;
+select * from combustible.usuario_roles ur ;
+select * from combustible.usuario u ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

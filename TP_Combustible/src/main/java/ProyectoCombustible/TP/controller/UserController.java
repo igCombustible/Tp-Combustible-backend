@@ -1,5 +1,7 @@
 package ProyectoCombustible.TP.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProyectoCombustible.TP.dto.LoginDto;
 import ProyectoCombustible.TP.model.Usuario;
 import ProyectoCombustible.TP.model.UsuarioRoles;
 import ProyectoCombustible.TP.request.AuthRequest;
@@ -47,24 +50,27 @@ public class UserController {
     }
 
     @GetMapping("/user/userProfile")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public String userProfile() {
         return "Welcome to User Profile";
     }
 
     @GetMapping("/admin/adminProfile")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";
     }
 
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public LoginDto authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+             String token = jwtService.generateToken(authRequest.getUsername());
+             Optional<Usuario> usuario = this.service.buscarUsuario(authRequest.getUsername());
+             LoginDto loginDto = new LoginDto(token, (usuario.get().getRoles())) ;
+            return loginDto;
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }

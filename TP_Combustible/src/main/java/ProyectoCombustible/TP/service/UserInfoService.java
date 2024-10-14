@@ -31,6 +31,14 @@ public class UserInfoService implements UserDetailsService {
         return userDetail.map(UserInfoDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+    
+    
+    public Optional<Usuario> buscarUsuario(String username) {
+        return repository.findByEmail(username); // Assuming 'email' is used as username
+
+        
+    }
+
 
     @Transactional
     public String addUser(Usuario userInfo) {
@@ -39,4 +47,5 @@ public class UserInfoService implements UserDetailsService {
         repository.save(userInfo);
         return "User Added Successfully";
     }
+    
 }

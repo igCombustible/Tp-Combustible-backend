@@ -1,7 +1,9 @@
 package ProyectoCombustible.TP.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,7 +28,7 @@ public class Usuario {
     private String password;
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<UsuarioRoles> usuarioRoles = new HashSet<>();;
+    private Set<UsuarioRoles> usuarioRoles = new HashSet<>();
 
     
     
@@ -73,5 +75,8 @@ public class Usuario {
 	public void setUsuarioRoles(Set<UsuarioRoles> usuarioRoles) {
 		this.usuarioRoles = usuarioRoles;
 	}
-
+	
+	public List<String> getRoles(){
+		return this.getUsuarioRoles().stream().map(x -> x.getRol().getName()).collect(Collectors.toList());
+	}
 }
