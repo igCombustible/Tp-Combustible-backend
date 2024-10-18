@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ProyectoCombustible.TP.dto.LoginDto;
 import ProyectoCombustible.TP.model.Usuario;
-import ProyectoCombustible.TP.model.UsuarioRoles;
+import ProyectoCombustible.TP.model.UsuarioRol;
 import ProyectoCombustible.TP.request.AuthRequest;
 import ProyectoCombustible.TP.service.JwtService;
 import ProyectoCombustible.TP.service.UserInfoService;
@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody Usuario userInfo) {
         if (userInfo.getUsuarioRoles() != null) {
-            for (UsuarioRoles usuarioRol : userInfo.getUsuarioRoles()) {
+            for (UsuarioRol usuarioRol : userInfo.getUsuarioRoles()) {
                 usuarioRol.setUsuario(userInfo);
             }
         }

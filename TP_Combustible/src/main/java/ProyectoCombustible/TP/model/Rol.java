@@ -1,6 +1,7 @@
 package ProyectoCombustible.TP.model;
 
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,12 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="roles", schema="combustible")
-public class Roles {
+@Table(name="rol", schema="combustible")
+public class Rol {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
-    private int id;
+    private String id;
 	
 	
 	@Column (name="name")
@@ -28,14 +27,14 @@ public class Roles {
     private String description;
 	
 	@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<UsuarioRoles> usuarioRoles;
+    private Set<UsuarioRol> usuarioRoles;
 
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

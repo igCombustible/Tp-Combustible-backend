@@ -3,7 +3,9 @@ package ProyectoCombustible.TP.model;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,23 +22,20 @@ import jakarta.persistence.Table;
 
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+    private String id ;
     private String name;
     private String email;
     private String password;
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<UsuarioRoles> usuarioRoles = new HashSet<>();
+    private Set<UsuarioRol> usuarioRoles = new HashSet<>();
 
     
-    
-    
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -46,7 +45,7 @@ public class Usuario {
 	public Usuario() {
 	}
 	
-	public Usuario(int id, String name, String email, String password, Set<UsuarioRoles> usuarioRoles) {
+	public Usuario(String id, String name, String email, String password, Set<UsuarioRol> usuarioRoles) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -69,10 +68,10 @@ public class Usuario {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Set<UsuarioRoles> getUsuarioRoles() {
+	public Set<UsuarioRol> getUsuarioRoles() {
 		return usuarioRoles;
 	}
-	public void setUsuarioRoles(Set<UsuarioRoles> usuarioRoles) {
+	public void setUsuarioRoles(Set<UsuarioRol> usuarioRoles) {
 		this.usuarioRoles = usuarioRoles;
 	}
 	

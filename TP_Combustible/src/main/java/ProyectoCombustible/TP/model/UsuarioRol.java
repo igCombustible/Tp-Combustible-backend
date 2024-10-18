@@ -2,6 +2,8 @@ package ProyectoCombustible.TP.model;
 
 
 
+import java.util.UUID;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,12 +13,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario_roles", schema = "combustible")
-public class UsuarioRoles {
+@Table(name = "usuario_rol", schema = "combustible")
+public class UsuarioRol {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+    private String id = UUID.randomUUID().toString();
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
@@ -24,15 +25,15 @@ public class UsuarioRoles {
 
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
-    private Roles rol;
+    private Rol rol;
 
     // Getters y Setters
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,11 +45,11 @@ public class UsuarioRoles {
         this.usuario = usuario;
     }
 
-    public Roles getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(Roles rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 }

@@ -4,7 +4,7 @@ package ProyectoCombustible.TP.dto;
 import java.util.Set;
 
 import ProyectoCombustible.TP.model.Usuario;
-import ProyectoCombustible.TP.model.UsuarioRoles;
+import ProyectoCombustible.TP.model.UsuarioRol;
 
 
 
@@ -12,7 +12,7 @@ public class UsuarioDto {
 		protected String name;
 		protected String email;
 		protected String password;
-		protected Set<UsuarioRoles> roles;
+		protected Set<UsuarioRol> roles;
 		
 		
 		public String getEmail() {

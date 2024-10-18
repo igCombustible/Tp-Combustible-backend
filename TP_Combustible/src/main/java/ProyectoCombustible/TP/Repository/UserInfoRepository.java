@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import ProyectoCombustible.TP.model.Usuario;
 
 @Repository
-public interface UserInfoRepository extends JpaRepository<Usuario, Integer> {
+public interface UserInfoRepository extends JpaRepository<Usuario, String> {
 
 	Optional<Usuario> findByEmail(String email); // Use 'email' if that is the correct field for login
 	

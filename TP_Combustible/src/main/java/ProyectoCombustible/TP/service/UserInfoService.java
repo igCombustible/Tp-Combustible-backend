@@ -1,6 +1,7 @@
 package ProyectoCombustible.TP.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,6 +45,7 @@ public class UserInfoService implements UserDetailsService {
     public String addUser(Usuario userInfo) {
         // Encode password before saving the user
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+        userInfo.setId(UUID.randomUUID().toString());
         repository.save(userInfo);
         return "User Added Successfully";
     }
