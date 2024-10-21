@@ -1,10 +1,10 @@
-DROP TABLE combustible.usuario_roles;
+DROP TABLE combustible.usuario_rol;
 DROP TABLE combustible.usuario;
-DROP TABLE combustible.roles;
+DROP TABLE combustible.rol;
 -- combustible.usuario definition
 
 CREATE TABLE combustible.usuario (
-  id int(11) NOT NULL AUTO_INCREMENT,
+  id VARCHAR(36) NOT NULL,
   email varchar(255) DEFAULT NULL,
   name varchar(255) DEFAULT NULL,
   password varchar(255) DEFAULT NULL,
@@ -12,52 +12,41 @@ CREATE TABLE combustible.usuario (
   UNIQUE KEY index_usuario_email (email)
 );
 
-INSERT into combustible.usuario(email,name,password) 
-VALUES ('admin@gmail.com','admin','admin');
+INSERT into combustible.usuario(id,email,name,password) 
+VALUES (UUID(),'admin@gmail.com','admin','admin');
 
-insert into combustible.usuario_roles(id, id_usuario, id_rol) values (1,1,2);
 
-CREATE TABLE combustible.roles (
-	id int(11) NOT NULL AUTO_INCREMENT,
+
+CREATE TABLE combustible.rol (
+	id VARCHAR(36) NOT NULL ,
 	name varchar(50) DEFAULT NULL,
 	description varchar(256) DEFAULT NULL,
 	PRIMARY KEY (id)
 	);
+
+INSERT into combustible.rol (id,name,description)
+VALUES(UUID(),'USER','usuario basico');
+
+INSERT into combustible.rol (id,name,description)
+VALUES(UUID(),'ADMIN','usuario con poderes');
+
 	
-CREATE TABLE combustible.usuario_roles (
-	id int(11) NOT NULL AUTO_INCREMENT,
-	id_usuario int(11) NOT NULL,
-	id_rol int(11) NOT NULL,
+CREATE TABLE combustible.usuario_rol (
+	id VARCHAR(36) NOT NULL,
+	id_usuario VARCHAR(36) NOT NULL,
+	id_rol VARCHAR(36) NOT NULL,
 	PRIMARY KEY (id),
     UNIQUE KEY index_usuario_rol (id_usuario,id_rol),
-    FOREIGN KEY (id_rol) REFERENCES roles(id),
+    FOREIGN KEY (id_rol) REFERENCES rol(id),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 	);
 	
-INSERT into combustible.roles (name,description)
-VALUES('USER','usuario basico');
+INSERT INTO combustible.usuario_rol(id, id_usuario, id_rol)
+VALUES (UUID(), (select ID from combustible.usuario where  email = 'admin@gmail.com'), (select id from combustible.rol where name = 'ADMIN'));
 
-INSERT into combustible.roles(name,description)
-VALUES('ADMIN','usuario con poderes');
-
-select * from combustible.roles r ;
-select * from combustible.usuario_roles ur ;
+select * from combustible.rol r ;
+select * from combustible.usuario_rol ur ;
 select * from combustible.usuario u ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
