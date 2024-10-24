@@ -44,9 +44,19 @@ CREATE TABLE combustible.usuario_rol (
 INSERT INTO combustible.usuario_rol(id, id_usuario, id_rol)
 VALUES (UUID(), (select ID from combustible.usuario where  email = 'admin@gmail.com'), (select id from combustible.rol where name = 'ADMIN'));
 
+CREATE TABLE combustible.vehiculo (
+  marca varchar(255) DEFAULT NULL,
+  modelo varchar(255) DEFAULT NULL,
+  patente varchar(255) NOT NULL,
+  ultimo_km int DEFAULT NULL,
+  estado_vehiculo boolean NOT NULL,
+  PRIMARY KEY (patente)  -- La clave primaria ya es única
+);
+
 select * from combustible.rol r ;
 select * from combustible.usuario_rol ur ;
 select * from combustible.usuario u ;
+select * from combustible.vehiculo v ;
 
 
 
