@@ -1,6 +1,8 @@
 
 package ProyectoCombustible.TP.dto;
 
+import java.util.Optional;
+
 import ProyectoCombustible.TP.model.Vehiculo;
 
 public class VehiculoDto {
@@ -41,12 +43,12 @@ public class VehiculoDto {
 		this.estado_vehiculo = estado_vehiculo;
 	}
 	
-	public VehiculoDto(Vehiculo vehiculo) {
-		this.patente = vehiculo.getPatente();
-		this.marca = vehiculo.getMarca();
-		this.modelo = vehiculo.getModelo();
-		this.ultimoValorConocidoKm = vehiculo.getUltimoValorConocidoKm();
-		this.estado_vehiculo = vehiculo.getEstado_vehiculo();
+	public VehiculoDto(Optional<Vehiculo> vehiculo) {
+		this.patente = vehiculo.get().getPatente();
+		this.marca = vehiculo.get().getMarca();
+		this.modelo = vehiculo.get().getModelo();
+		this.ultimoValorConocidoKm = vehiculo.get().getUltimoValorConocidoKm();
+		this.estado_vehiculo = vehiculo.get().getEstado_vehiculo();
 	}
 	
 }

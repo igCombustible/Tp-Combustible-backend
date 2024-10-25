@@ -8,10 +8,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProyectoCombustible.TP.dto.VehiculoDto;
 import ProyectoCombustible.TP.model.Vehiculo;
 import ProyectoCombustible.TP.service.VehiculoService;
 
@@ -34,8 +36,15 @@ public class VehiculoController {
     }
 
     @PostMapping("/agregarVehiculo")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Vehiculo createVehiculo(@RequestBody Vehiculo vehiculo) {
         return vehiculoService.save(vehiculo);
     }
+    
+    @PutMapping("/user/editarVehiculo/{patente}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public VehiculoDto editarVehivulo(@PathVariable String patente, @RequestBody Vehiculo vehiculo) {
+    	return this.vehiculoService.editarVehiculo(patente, vehiculo);
+    }
+    
 }
