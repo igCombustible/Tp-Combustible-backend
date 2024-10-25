@@ -1,63 +1,52 @@
-package ProyectoCombustible.TP.dto;
 
-import java.util.Optional;
+package ProyectoCombustible.TP.dto;
 
 import ProyectoCombustible.TP.model.Vehiculo;
 
 public class VehiculoDto {
 	private String marca;
 	private String modelo;
-	private String patente;
-	private Boolean estado;
 	private Integer ultimoValorConocidoKm;
-
-	public VehiculoDto(Optional<Vehiculo> vehiculo) {
-		super();
-		this.marca = vehiculo.get().getMarca();
-		this.modelo = vehiculo.get().getModelo();
-		this.patente = vehiculo.get().getPatente();
-		this.estado = vehiculo.get().getEstado();
-		this.ultimoValorConocidoKm = vehiculo.get().getUltimoValorConocidoKm();
-	}
-
-	public String getMarca() {
-		return marca;
-	}
-
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
-
+	private Boolean estado_vehiculo;
+	private String patente;
+	
 	public String getPatente() {
 		return patente;
 	}
-
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
-
-	public Boolean getEstado() {
-		return estado;
+	public String getMarca() {
+		return marca;
 	}
-
-	public void setEstado(Boolean estado) {
-		this.estado = estado;
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
-
+	public String getModelo() {
+		return modelo;
+	}
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
 	public Integer getUltimoValorConocidoKm() {
 		return ultimoValorConocidoKm;
 	}
-
 	public void setUltimoValorConocidoKm(Integer ultimoValorConocidoKm) {
 		this.ultimoValorConocidoKm = ultimoValorConocidoKm;
+	}
+	public Boolean getEstado_vehiculo() {
+		return estado_vehiculo;
+	}
+	public void setEstado_vehiculo(Boolean estado_vehiculo) {
+		this.estado_vehiculo = estado_vehiculo;
+	}
+	
+	public VehiculoDto(Vehiculo vehiculo) {
+		this.patente = vehiculo.getPatente();
+		this.marca = vehiculo.getMarca();
+		this.modelo = vehiculo.getModelo();
+		this.ultimoValorConocidoKm = vehiculo.getUltimoValorConocidoKm();
+		this.estado_vehiculo = vehiculo.getEstado_vehiculo();
 	}
 	
 }

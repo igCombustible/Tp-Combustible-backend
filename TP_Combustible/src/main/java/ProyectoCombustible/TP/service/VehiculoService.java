@@ -1,3 +1,4 @@
+
 package ProyectoCombustible.TP.service;
 
 import java.util.Optional;
@@ -6,27 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProyectoCombustible.TP.Repository.VehiculoRepository;
-import ProyectoCombustible.TP.dto.VehiculoDto;
 import ProyectoCombustible.TP.model.Vehiculo;
+
+import java.util.List;
 
 
 @Service
 public class VehiculoService {
-	
-	@Autowired
-	private VehiculoRepository repository;
+	 	@Autowired
+	    private VehiculoRepository vehiculoRepository;
 
-	public VehiculoDto editarVehiculo(String id, Vehiculo vehiculo) {
-		Optional<Vehiculo> unVehiculo = this.repository.findById(id);
-		unVehiculo.get().setMarca(vehiculo.getMarca());
-		unVehiculo.get().setModelo(vehiculo.getModelo());
-		unVehiculo.get().setPatente(vehiculo.getPatente());
-		unVehiculo.get().setEstado(vehiculo.getEstado());
-		unVehiculo.get().setUltimoValorConocidoKm(vehiculo.getUltimoValorConocidoKm());
-		VehiculoDto vehiculoDto = new VehiculoDto(unVehiculo); 
-		return vehiculoDto;
-		
-	}
-	
-	
+	    public List<Vehiculo> findAll() {
+	        return vehiculoRepository.findAll();
+	    }
+
+	    public Optional<Vehiculo> findByPatente(String patente) {
+	        return vehiculoRepository.findById(patente);
+	    }
+
+	    public Vehiculo save(Vehiculo vehiculo) {
+	        return vehiculoRepository.save(vehiculo);
+	    }
+
+	    public void delete(String patente) {
+	        vehiculoRepository.deleteById(patente);
+	    }
 }
+
