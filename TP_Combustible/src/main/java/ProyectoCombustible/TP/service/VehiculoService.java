@@ -1,5 +1,6 @@
 package ProyectoCombustible.TP.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,7 @@ import org.springframework.stereotype.Service;
 import ProyectoCombustible.TP.Repository.VehiculoRepository;
 import ProyectoCombustible.TP.dto.VehiculoDto;
 import ProyectoCombustible.TP.model.Vehiculo;
-
-import java.util.List;
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -25,9 +25,19 @@ public class VehiculoService {
 	        return vehiculoRepository.findById(patente);
 	    }
 
-	    public Vehiculo save(Vehiculo vehiculo) {
-	        return vehiculoRepository.save(vehiculo);
+	    @Transactional
+	    public String agregarVehiculo(Vehiculo vehicle) {
+	        // Verificar si ya existe un vehículo con la misma patente
+	        Optional<Vehiculo> vehiculoExistente = vehiculoRepository.findByPatente(vehicle.getPatente());
+	        
+	        if (vehiculoExistente.isPresent()) {
+	            throw new IllegalArgumentException("Ya existe un vehículo con la misma patente.");
+	        }
+	        vehiculoRepository.save(vehicle);
+	        
+	        return "Vehículo agregado exitosamente";
 	    }
+	    
 
 	    public void delete(String patente) {
 	        vehiculoRepository.deleteById(patente);

@@ -3,6 +3,7 @@ package ProyectoCombustible.TP.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,12 @@ public class VehiculoController {
 
     @PostMapping("/agregarVehiculo")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Vehiculo createVehiculo(@RequestBody Vehiculo vehiculo) {
-        return vehiculoService.save(vehiculo);
+    public ResponseEntity<String>  createVehiculo(@RequestBody Vehiculo vehiculo) {
+        try {
+        	return  ResponseEntity.ok(vehiculoService.agregarVehiculo(vehiculo));
+        }catch (IllegalArgumentException e){
+        	return ResponseEntity.status(HttpStatus.CONFLICT).body("Vehiculo duplicado");
+        }
     }
     
     @PutMapping("/editarVehiculo/{patente}")
