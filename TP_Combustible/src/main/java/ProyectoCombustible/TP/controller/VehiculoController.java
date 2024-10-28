@@ -41,7 +41,7 @@ public class VehiculoController {
         return vehiculoService.save(vehiculo);
     }
     
-    @PutMapping("/user/editarVehiculo/{patente}")
+    @PutMapping("/editarVehiculo/{patente}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public VehiculoDto editarVehivulo(@PathVariable String patente, @RequestBody Vehiculo vehiculo) {
     	return this.vehiculoService.editarVehiculo(patente, vehiculo);
