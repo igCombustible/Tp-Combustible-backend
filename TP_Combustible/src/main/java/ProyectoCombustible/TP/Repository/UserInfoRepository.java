@@ -13,4 +13,5 @@ public interface UserInfoRepository extends JpaRepository<Usuario, String> {
 	
 	@EntityGraph(attributePaths = {"usuarioRoles"})
 	Optional<Usuario> findByEmail(String email); // Use 'email' if that is the correct field for login
+	
 }

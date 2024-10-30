@@ -36,7 +36,7 @@ public class VehiculoController {
     }
 
     @PostMapping("/agregarVehiculo")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public Vehiculo createVehiculo(@RequestBody Vehiculo vehiculo) {
         return vehiculoService.save(vehiculo);
     }
