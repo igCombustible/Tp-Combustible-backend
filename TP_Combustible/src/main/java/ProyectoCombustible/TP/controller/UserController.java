@@ -17,7 +17,7 @@ import ProyectoCombustible.TP.service.JwtService;
 import ProyectoCombustible.TP.service.UserInfoService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/usuario")
 public class UserController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/addNewUser")
+    @PostMapping()
     public String addNewUser(@RequestBody Usuario userInfo) {
         return service.addUser(userInfo);
     }

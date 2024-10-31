@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,12 @@ import ProyectoCombustible.TP.model.Vehiculo;
 import ProyectoCombustible.TP.service.VehiculoService;
 
 @RestController
-@RequestMapping("/auth/vehiculo")
+@RequestMapping("/vehiculo")
 public class VehiculoController {
 	@Autowired
 	private VehiculoService vehiculoService;
 	
-	@GetMapping("/todosLosVehiculos")
+	@GetMapping()
     public List<Vehiculo> getAllVehiculos() {
         return vehiculoService.findAll();
     }
@@ -36,7 +37,7 @@ public class VehiculoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/agregarVehiculo")
+    @PostMapping()
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String>  createVehiculo(@RequestBody Vehiculo vehiculo) {
@@ -47,10 +48,24 @@ public class VehiculoController {
         }
     }
     
-    @PutMapping("/editarVehiculo/{patente}")
+    @PutMapping("/{patente}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public VehiculoDto editarVehivulo(@PathVariable String patente, @RequestBody Vehiculo vehiculo) {
     	return this.vehiculoService.editarVehiculo(patente, vehiculo);
     }
+  
+    @DeleteMapping("/{patente}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> eliminarVehiculo(@PathVariable String patente) {
+        try {
+            this.vehiculoService.delete(patente);
+            return ResponseEntity.ok("Vehículo eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el vehículo");
+        }
+    }
+    
+    
+    
     
 }
