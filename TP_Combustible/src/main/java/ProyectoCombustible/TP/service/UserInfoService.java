@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ProyectoCombustible.TP.Repository.UserInfoRepository;
 import ProyectoCombustible.TP.dto.LoginDto;
+import ProyectoCombustible.TP.model.Ticket;
 import ProyectoCombustible.TP.model.Usuario;
 import ProyectoCombustible.TP.model.UsuarioRol;
 import ProyectoCombustible.TP.security.UserInfoDetails;
@@ -61,5 +62,12 @@ public class UserInfoService implements UserDetailsService {
         return "User Added Successfully";
     }
 
-    
+
 }
+
+  
+
+	
+
+    
+

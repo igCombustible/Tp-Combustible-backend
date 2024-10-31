@@ -1,6 +1,7 @@
 DROP TABLE combustible.usuario_rol;
 DROP TABLE combustible.usuario;
 DROP TABLE combustible.rol;
+DROP TABLE combustible.ticket;
 -- combustible.usuario definition
 
 CREATE TABLE combustible.usuario (
@@ -53,10 +54,30 @@ CREATE TABLE combustible.vehiculo (
   PRIMARY KEY (patente)  -- La clave primaria ya es única
 );
 
+CREATE TABLE combustible.ticket (
+    id VARCHAR(36) NOT NULL,
+    cantidad_de_solicitud INT,
+    fecha_de_solicitud TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    usuario_id VARCHAR(36) NOT NULL,
+    patente VARCHAR(255) NOT NULL,
+    estado VARCHAR(20) NOT NULL,  
+    PRIMARY KEY (id),
+    FOREIGN KEY (usuario_id) REFERENCES combustible.usuario(id),
+    FOREIGN KEY (vehiculo_id) REFERENCES combustible.vehiculo(patente)
+); 
+
+
+
+
+-- INSERT INTO combustible.ticket(id, cantidadDeSolicitud, fecha_de_solicitud, usuario_id, vehiculo_id, estado)
+-- VALUES (UUID(), 1, CURDATE(), (SELECT id FROM combustible.usuario WHERE email = 'admin@gmail.com'), (SELECT patente FROM combustible.vehiculo LIMIT 1), 'ENTREGADO');
+
+
+
 select * from combustible.rol r ;
 select * from combustible.usuario_rol ur ;
 select * from combustible.usuario u ;
 select * from combustible.vehiculo v ;
-
+SELECT * FROM combustible.ticket t;
 
 

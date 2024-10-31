@@ -37,6 +37,7 @@ public class VehiculoController {
     }
 
     @PostMapping("/agregarVehiculo")
+
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String>  createVehiculo(@RequestBody Vehiculo vehiculo) {
         try {
