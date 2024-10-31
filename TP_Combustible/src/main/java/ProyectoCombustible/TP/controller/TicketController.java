@@ -46,20 +46,14 @@ public class TicketController {
     
 
     @Autowired TicketService ticketService2;
+    @Autowired UserInfoService userinfoservice;
     
     @PostMapping("/agregarTicket")
-    public Ticket ceateTicket(@RequestBody TicketDto ticketdto) {
- 	   
-    Ticket ticket = new Ticket();
-    ticket.setCantidadDeSolicitud(ticketdto.getCantidadDeSolicitud());
-    ticket.setFechaDeSolicitud(ticketdto.getFechaDeSolicitud());
-    ticket.setId(ticketdto.getIdusuario());
-    ticket.setEstado(ticketdto.getEstado());
+    public String ceateTicket(@RequestBody Ticket ticket) {
+ 	return  ticketService.save(ticket);
     
-    
-    
-    
-   return ticketService.save(ticket);
+ 
+ 
   }
 
     

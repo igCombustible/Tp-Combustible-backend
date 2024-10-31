@@ -24,9 +24,10 @@ public class TicketService {
       return ticketRepository.findById(id);
   }
 
-  public Ticket save(Ticket ticket) {
-	return ticketRepository.save(ticket);
-	   }
+  public String save(Ticket ticket) {
+	 ticketRepository.save(ticket);
+	return "se agrego correctamente, espera confirmacion del operador" ; 
+			}
   
   
   public void delete (String id) {

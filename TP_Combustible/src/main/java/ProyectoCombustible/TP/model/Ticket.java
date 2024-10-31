@@ -16,7 +16,7 @@ public class Ticket {
     private Date fechaDeSolicitud;
     
     @ManyToOne(fetch = FetchType.LAZY) 
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
    @ManyToOne(fetch = FetchType.LAZY) 
