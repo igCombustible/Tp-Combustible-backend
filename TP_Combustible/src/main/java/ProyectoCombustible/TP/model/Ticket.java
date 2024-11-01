@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "ticket", schema = "combustible")
 public class Ticket {    
-	 @Id
+	
+	@Id
 	private String id = UUID.randomUUID().toString();
 
     private Integer cantidadDeSolicitud; 
@@ -19,7 +20,7 @@ public class Ticket {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-   @ManyToOne(fetch = FetchType.LAZY) 
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "patente") 
     private Vehiculo vehiculo;
     
@@ -28,8 +29,24 @@ public class Ticket {
     private EstadoDelTicket estado;
 
    
+    public Ticket() {}
     
-    public String getId() {
+    public Ticket(Integer cantidadDeSolicitud, Date fechaDeSolicitud, Usuario usuario, Vehiculo vehiculo,
+			EstadoDelTicket estado) {
+		super();
+		this.cantidadDeSolicitud = cantidadDeSolicitud;
+		this.fechaDeSolicitud = fechaDeSolicitud;
+		this.usuario = usuario;
+		this.vehiculo = vehiculo;
+		this.estado = estado;
+	}
+    
+	
+
+
+
+
+	public String getId() {
         return id;
     }
 

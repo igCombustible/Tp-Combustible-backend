@@ -1,11 +1,10 @@
 package ProyectoCombustible.TP.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,26 +13,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ProyectoCombustible.TP.Repository.VehiculoRepository;
 import ProyectoCombustible.TP.dto.TicketDto;
 import ProyectoCombustible.TP.model.Ticket;
-import ProyectoCombustible.TP.model.Usuario;
-import ProyectoCombustible.TP.model.Vehiculo;
 import ProyectoCombustible.TP.service.TicketService;
-import ProyectoCombustible.TP.service.UserInfoService;
-import ProyectoCombustible.TP.service.VehiculoService;
 
 
 
 
 
 @RestController
-@RequestMapping("/auth/ticket")
+@RequestMapping("/ticket")
 public class TicketController {
 	@Autowired
 	private TicketService ticketService;
 	
-	@GetMapping("/todosLosTickets")
+	
+	@GetMapping
 	public List <Ticket> getAllTickets(){
 		return ticketService.findAll();	}
 	
@@ -43,30 +38,20 @@ public class TicketController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
-
-    @Autowired TicketService ticketService2;
-    @Autowired UserInfoService userinfoservice;
-    
-    @PostMapping("/agregarTicket")
-    public String ceateTicket(@RequestBody Ticket ticket) {
- 	return  ticketService.save(ticket);
-    
- 
- 
-  }
-
-    
-   
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> cancelTicket(@PathVariable String id) {
-       ticketService.delete(id);
-       return ResponseEntity.noContent().build();
-   }
-
+	
+    @PostMapping
+    @PreAuthorize("hasAuthority('USER')")
+    public String ceateTicket(@RequestBody TicketDto ticketDto) {
+    	return  ticketService.save(ticketDto);
+ 	}
     
     
-    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
+	public ResponseEntity<Void> cancelTicket(@PathVariable String id) {
+		ticketService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
     
 }
 

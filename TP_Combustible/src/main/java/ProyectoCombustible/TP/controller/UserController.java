@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping()
+    @PostMapping("/registrarse")
     public String addNewUser(@RequestBody Usuario userInfo) {
         return service.addUser(userInfo);
     }

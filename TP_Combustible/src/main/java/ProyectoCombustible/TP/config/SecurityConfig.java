@@ -44,7 +44,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
             .csrf(csrf -> csrf.disable()) // Desactivar CSRF para APIs sin estado
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+                .requestMatchers( "/usuario/registrarse", "usuario/generateToken" ).permitAll()
                 .anyRequest().authenticated() // Protege todos los demás endpoints
             )
             .sessionManagement(sess -> sess

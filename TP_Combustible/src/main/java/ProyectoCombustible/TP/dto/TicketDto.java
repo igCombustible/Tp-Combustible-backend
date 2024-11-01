@@ -1,17 +1,13 @@
 package ProyectoCombustible.TP.dto;
 
-import java.util.Date;
-
-import ProyectoCombustible.TP.model.EstadoDelTicket;
+import ProyectoCombustible.TP.model.Ticket;
 
 public class TicketDto {
     
 	private String id; 
-    private Integer cantidadDeSolicitud;
-    private Date fechaDeSolicitud;
-    private String idusuario; 
-    private String patente; 
-    private EstadoDelTicket estado; 
+    private Ticket ticket;
+    private String userName; 
+    private String patente;  
 
     // Getters y Setters
     public String getId() {
@@ -22,31 +18,6 @@ public class TicketDto {
         this.id = id;
     }
 
-    public Integer getCantidadDeSolicitud() {
-        return cantidadDeSolicitud;
-    }
-
-    public void setCantidadDeSolicitud(Integer cantidadDeSolicitud) {
-        this.cantidadDeSolicitud = cantidadDeSolicitud;
-    }
-
-    public Date getFechaDeSolicitud() {
-        return fechaDeSolicitud;
-    }
-
-    public void setFechaDeSolicitud(Date fechaDeSolicitud) {
-        this.fechaDeSolicitud = fechaDeSolicitud;
-    }
-
-   
-    public EstadoDelTicket getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoDelTicket estado) {
-        this.estado = estado;
-    }
-
 	public String getPatente() {
 		return patente;
 	}
@@ -55,12 +26,23 @@ public class TicketDto {
 		this.patente = patente;
 	}
 
-	public String getIdusuario() {
-		return idusuario;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setIdusuario(String idusuario) {
-		this.idusuario = idusuario;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
+	
+
+	
 
 }

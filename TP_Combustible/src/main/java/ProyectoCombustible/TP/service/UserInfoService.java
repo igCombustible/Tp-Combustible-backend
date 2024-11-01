@@ -47,8 +47,8 @@ public class UserInfoService implements UserDetailsService {
     	List<String> roles = usuario.get().getRoles();
         return new LoginDto(token, roles);
     }
-
     
+   
     @Transactional
     public String addUser(Usuario userInfo) {
     	if (userInfo.getUsuarioRoles() != null) {
@@ -61,6 +61,12 @@ public class UserInfoService implements UserDetailsService {
         repository.save(userInfo);
         return "User Added Successfully";
     }
+
+
+	public Optional<Usuario> buscarPorEmail(String username) {
+		Optional<Usuario> usuario = repository.findByEmail(username);
+		return usuario;
+	}
 
 
 }
