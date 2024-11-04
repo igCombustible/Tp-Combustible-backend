@@ -1,6 +1,9 @@
 package ar.edu.unq.grupo4.combustible.model;
 
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -17,6 +20,7 @@ public class UsuarioRol {
 
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
 
     @ManyToOne( fetch = FetchType.LAZY)

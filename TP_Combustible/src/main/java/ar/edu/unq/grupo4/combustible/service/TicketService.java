@@ -3,6 +3,7 @@ package ar.edu.unq.grupo4.combustible.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,10 @@ public class TicketService {
 	
 	@Transactional(readOnly = true)
 	public List<Ticket> findAll(){
-		return ticketRepository.findAll();
+		List<Ticket> todosLosTickets = ticketRepository.findAll();		
+		return todosLosTickets.stream()
+				.filter(t -> t.getEstado() == EstadoDelTicket.ESPERANDO)
+				.collect(Collectors.toList());
 	}	
 	public Optional<Ticket> getTicketById(String id) {
 	    return ticketRepository.findById(id);
