@@ -63,4 +63,13 @@ public class TicketService {
 	public void delete (String id) {
 		ticketRepository.deleteById(id);
 	}
+	
+	
+	@Transactional
+	public String confirmar(String id) {
+		Optional<Ticket> ticket = this.getTicketById(id);
+		ticket.get().setEstado(EstadoDelTicket.ACEPTADO);
+		this.ticketRepository.save(ticket.get());
+		return "se acepto el ticket";
+	}
 } 

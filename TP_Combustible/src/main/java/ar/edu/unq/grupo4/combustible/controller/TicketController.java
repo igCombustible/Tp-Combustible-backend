@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,8 @@ public class TicketController {
 	
 	@GetMapping
 	public List <Ticket> getAllTickets(){
-		return ticketService.findAll();	}
+		return ticketService.findAll();	
+	}
 	
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable String id) {
@@ -50,6 +52,10 @@ public class TicketController {
 		ticketService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+    @PutMapping("/{id}")
+    public String aceptarTicket(@PathVariable String id) {
+    	return this.ticketService.confirmar(id);
+    }
     
 }
 

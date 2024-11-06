@@ -1,24 +1,24 @@
-//package ar.edu.unq.grupo4.combustible.service;
-//
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cache.annotation.Cacheable;
-//import org.springframework.stereotype.Service;
-//
-//import ProyectoCombustible.TP.Repository.RolRepository;
-//import ProyectoCombustible.TP.model.Rol;
-//
-//@Service
-//public class RolService {
-//
-//    @Autowired
-////    private RolRepository rolRepository;
-//
-////    @Cacheable(value = "rolesCache", key = "#name")
-////    public String getRolByName(String name) {
-////        Rol rol = rolRepository.findByName(name);
-////        return rol.getId();
-////    }
-//
-//   
-//}
+package ar.edu.unq.grupo4.combustible.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ar.edu.unq.grupo4.combustible.model.Rol;
+import ar.edu.unq.grupo4.combustible.repository.RolRepository;
+
+
+
+@Service
+public class RolService {
+
+    @Autowired
+    private RolRepository rolRepository;
+
+    public String getRolByName(String name) {
+        Rol rol = rolRepository.findByName(name);
+        return rol.getId();
+    }
+
+   
+}
