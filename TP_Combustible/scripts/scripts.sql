@@ -63,7 +63,7 @@ CREATE TABLE combustible.ticket (
     estado VARCHAR(20) NOT NULL,  
     PRIMARY KEY (id),
     FOREIGN KEY (usuario_id) REFERENCES combustible.usuario(id),
-    FOREIGN KEY (vehiculo_id) REFERENCES combustible.vehiculo(patente)
+    FOREIGN KEY (patente) REFERENCES combustible.vehiculo(patente)
 ); 
 
 

@@ -19,7 +19,8 @@ public class Ticket {
 	
 	@Id
 	private String id = UUID.randomUUID().toString();
-
+	
+	@Column(name = "cantidad_de_solicitud")
     private Integer cantidadDeSolicitud; 
     
     @Column(name = "fecha_de_solicitud")

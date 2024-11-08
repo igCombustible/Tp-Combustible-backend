@@ -26,9 +26,23 @@ public class TicketController {
 	private TicketService ticketService;
 	
 	
-	@GetMapping
-	public List <Ticket> getAllTickets(){
-		return ticketService.findAll();	}
+	@GetMapping("/espera")
+	public List <Ticket> getAllTicketsEspera(){
+		return ticketService.findAllEspera();}
+	
+	@GetMapping("/aceptados")
+	public List <Ticket> getAllTicketsAceptados(){
+		return ticketService.findAllAceptados();}
+	
+	@GetMapping("/infoTickets/{patente}")
+	public List <Ticket> getTicketDeVehiculo(@PathVariable String patente){
+		return ticketService.findAllAceptadosPorPatente(patente);
+	}
+	
+	@GetMapping("/consumoTotalCombustible/{patente}")
+	public Integer getConsumoVehiculo(@PathVariable String patente) {
+		return ticketService.sumarCantidadDeSolicitudPorPatente(patente);
+	}
 	
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable String id) {
@@ -39,7 +53,7 @@ public class TicketController {
 	
     @PostMapping
     @PreAuthorize("hasAuthority('USER')")
-    public String ceateTicket(@RequestBody TicketDto ticketDto) {
+    public String createTicket(@RequestBody TicketDto ticketDto) {
     	return  ticketService.save(ticketDto);
  	}
     
