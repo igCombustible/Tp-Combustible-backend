@@ -18,7 +18,7 @@ public class VehiculoService {
 	    private VehiculoRepository vehiculoRepository;
 
 	    public List<Vehiculo> findAll() {
-	        return vehiculoRepository.findAll();
+	        return vehiculoRepository.findByDeletedFalse();
 	    }
 
 	    public Optional<Vehiculo> findByPatente(String patente) {

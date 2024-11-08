@@ -59,9 +59,12 @@ public class TicketService {
 		
 		return "se agrego correctamente, espera confirmacion del operador" ; 
 	}
-	
-	public void delete (String id) {
-		ticketRepository.deleteById(id);
+	@Transactional
+	public String cancelar (String id) {
+		Optional<Ticket> ticket = this.getTicketById(id);
+		ticket.get().setEstado(EstadoDelTicket.RECHAZADO);
+		this.ticketRepository.save(ticket.get());
+		return "se cancelo el ticket";
 	}
 	
 	

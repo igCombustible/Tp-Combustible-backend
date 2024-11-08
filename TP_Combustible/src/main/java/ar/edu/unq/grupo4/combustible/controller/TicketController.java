@@ -47,15 +47,19 @@ public class TicketController {
     
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
-	public ResponseEntity<Void> cancelTicket(@PathVariable String id) {
-		ticketService.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<String> cancelTicket(@PathVariable String id) {
+		
+		return ResponseEntity.ok(this.ticketService.cancelar(id));
 	}
     @PutMapping("/{id}")
     public String aceptarTicket(@PathVariable String id) {
     	return this.ticketService.confirmar(id);
     }
+    
+//    @PutMapping("/{id}")
+//    public String cancelarTicket(@PathVariable String id) {
+//    	return this.ticketService.cancelar(id);
+//    }
     
 }
 
