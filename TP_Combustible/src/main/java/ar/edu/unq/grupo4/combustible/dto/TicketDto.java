@@ -1,3 +1,4 @@
+		
 package ar.edu.unq.grupo4.combustible.dto;
 
 import ar.edu.unq.grupo4.combustible.model.Ticket;

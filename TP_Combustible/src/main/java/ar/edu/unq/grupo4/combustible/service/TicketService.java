@@ -27,18 +27,45 @@ public class TicketService {
 	
 	
 	@Transactional(readOnly = true)
-	public List<Ticket> findAll(){
+	public List<Ticket> findAllEspera(){
 		List<Ticket> todosLosTickets = ticketRepository.findAll();		
 		return todosLosTickets.stream()
 				.filter(t -> t.getEstado() == EstadoDelTicket.ESPERANDO)
 				.collect(Collectors.toList());
 	}	
+	
+	@Transactional(readOnly = true)
+	public List<Ticket> findAllAceptados(){
+		List<Ticket> todosLosTickets = ticketRepository.findAll();		
+		return todosLosTickets.stream()
+				.filter(t -> t.getEstado() == EstadoDelTicket.ACEPTADO)
+				.collect(Collectors.toList());
+	}	
+	
+	@Transactional(readOnly = true)
+	public List<Ticket> findAllAceptadosPorPatente(String patente) {
+	    List<Ticket> todosLosTickets = ticketRepository.findAll();
+	    return todosLosTickets.stream()
+	            .filter(t -> t.getEstado() == EstadoDelTicket.ACEPTADO && t.getVehiculo().getPatente().equals(patente))
+	            .collect(Collectors.toList());
+	}	
+	
+	@Transactional(readOnly = true)
+	public int sumarCantidadDeSolicitudPorPatente(String patente) {
+	    List<Ticket> todosLosTickets = ticketRepository.findAll();
+	    return todosLosTickets.stream()
+	            .filter(t -> t.getEstado() == EstadoDelTicket.ACEPTADO && t.getVehiculo().getPatente().equals(patente))
+	            .mapToInt(Ticket::getCantidadDeSolicitud)
+	            .sum();
+	}
+	
 	public Optional<Ticket> getTicketById(String id) {
 	    return ticketRepository.findById(id);
 	}
 	
 	@Transactional
 	public String save(TicketDto ticketDto) {
+		System.out.println(ticketDto);
 		Usuario usuario = this.usuarioService.buscarPorEmail(ticketDto.getUserName());
 		Optional<Vehiculo> vehiculo = this.vehiculoService.findByPatente(ticketDto.getPatente());
 		
