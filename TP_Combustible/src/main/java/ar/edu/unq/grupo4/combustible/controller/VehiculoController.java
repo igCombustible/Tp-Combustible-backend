@@ -38,6 +38,7 @@ public class VehiculoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+    
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")

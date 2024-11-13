@@ -40,9 +40,13 @@ public class TicketController {
 	}
 	
 	@GetMapping("/consumoTotalCombustible/{patente}")
-	public Integer getConsumoVehiculo(@PathVariable String patente) {
+	public Double getConsumoVehiculo(@PathVariable String patente) {
 		return ticketService.sumarCantidadDeSolicitudPorPatente(patente);
-
+	}
+	
+	@GetMapping("/consumoPromedioPorKm/{patente}")
+	public Double getConsumoPromedioPorKm(@PathVariable String patente) {
+		return ticketService.promedioKmPorConsumo(patente);
 	}
 	
     @GetMapping("/{id}")

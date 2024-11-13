@@ -51,12 +51,32 @@ public class TicketService {
 	}	
 	
 	@Transactional(readOnly = true)
-	public int sumarCantidadDeSolicitudPorPatente(String patente) {
+	public Double sumarCantidadDeSolicitudPorPatente(String patente) {
 	    List<Ticket> todosLosTickets = ticketRepository.findAll();
 	    return todosLosTickets.stream()
 	            .filter(t -> t.getEstado() == EstadoDelTicket.ACEPTADO && t.getVehiculo().getPatente().equals(patente))
-	            .mapToInt(Ticket::getCantidadDeSolicitud)
+	            .mapToDouble(Ticket::getCantidadDeSolicitud)
 	            .sum();
+	}
+	
+	public Double promedioKmPorConsumo(String patente) {
+	    Optional<Vehiculo> buscarVehiculo = vehiculoService.findByPatente(patente);
+	    
+	    if (buscarVehiculo.isPresent()) {
+	        Vehiculo vehiculo = buscarVehiculo.get();
+	        Double consumo = sumarCantidadDeSolicitudPorPatente(patente);
+	        
+	        if (consumo != 0) {
+	            Double km = vehiculo.getUltimoValorConocidoKm().doubleValue();
+	            return km / consumo;
+	        } else {
+	            System.out.println("El consumo es cero, no se puede calcular el promedio.");
+	            return null;
+	        }
+	    } else {
+	        System.out.println("Vehículo no encontrado con la patente: " + patente);
+	        return null; 
+	    }
 	}
 	
 	public Optional<Ticket> getTicketById(String id) {
