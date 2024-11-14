@@ -13,6 +13,5 @@ import ar.edu.unq.grupo4.combustible.model.Ticket;
 public interface TicketRepository extends JpaRepository<Ticket, String>{
 	
 	@EntityGraph(attributePaths = {"usuario.usuarioRoles.rol", "vehiculo"})
-    List<Ticket> findAll();
-}
+    List<Ticket> findAll();}
 
