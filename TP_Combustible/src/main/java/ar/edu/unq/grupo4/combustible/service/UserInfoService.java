@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.grupo4.combustible.dto.LoginDto;
+import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
+import ar.edu.unq.grupo4.combustible.model.Rol;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
@@ -74,11 +76,34 @@ public class UserInfoService implements UserDetailsService {
 		return usuario.get();
 	}
 
-    @Autowired UserInfoRepository userInfoRepository;
+    @Transactional
+    public String asignarRol(String id, Rol rol) {
+        Optional<Usuario> usuario = this.repository.findById(id);
+        		
+        UsuarioRol usuarioRol = new UsuarioRol();
+        
+        usuarioRol.setUsuario(usuario.get());
+        usuarioRol.setRol(rol);
+        
+        usuario.get().getUsuarioRoles().add(usuarioRol);        
+        this.repository.save(usuario.get());
+        
+        return "se agrego el rol correctamente";
+    }
+
+    @Transactional(readOnly = true)
+	public List<UsuarioDto> buscarTodos() {
+		List<Usuario> usuarios = this.repository.findAll();
+		List<UsuarioDto> usuariosDto =  usuarios.stream()
+												.map(usuario -> new UsuarioDto(usuario))
+												.collect(Collectors.toList());
+		return usuariosDto;
+  }
+
 	
     @Transactional(readOnly = true)
     public List<Usuario> usuariosAlaEspera(){
-    	List<Usuario> todosLosUsuarios = userInfoRepository.findAll();
+    	List<Usuario> todosLosUsuarios = repository.findAll();
     	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.PENDIENTE)
     			                .collect(Collectors.toList());
     }
@@ -86,7 +111,7 @@ public class UserInfoService implements UserDetailsService {
     
     @Transactional(readOnly = true)
     public List<Usuario> usuariosAceptados(){
-    	List<Usuario> todosLosUsuarios = userInfoRepository.findAll();
+    	List<Usuario> todosLosUsuarios = repository.findAll();
     	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.ACEPTADO)
     			.collect(Collectors.toList());
     }
@@ -100,21 +125,20 @@ public class UserInfoService implements UserDetailsService {
     
     @Transactional
     public String aceptarAlUsuario(String id) {
-    Optional<Usuario> usuario = userInfoRepository.findById(id);
+    Optional<Usuario> usuario = repository.findById(id);
     usuario.get().setEstado(EstadoDelUsuario.ACEPTADO);
     this.userInfoRepository.save(usuario.get());
     return "el usuario se ha aceptado";
     }
     
      @Transactional
-	public String cancelarAlUsuario (String id) {
-	Optional <Usuario> usuario = userInfoRepository.findById(id);
-	usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
-	this.userInfoRepository.save(usuario.get());
-	return "el usuario se ha rechazado";
-	}
+    public String cancelarAlUsuario (String id) {
+    Optional <Usuario> usuario = userInfoRepository.findById(id);
+    usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
+    this.userInfoRepository.save(usuario.get());
+    return "el usuario se ha rechazado";
+    }
 
-    
 }
 
     

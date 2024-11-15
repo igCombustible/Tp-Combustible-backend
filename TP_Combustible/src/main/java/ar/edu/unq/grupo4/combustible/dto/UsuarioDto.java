@@ -1,17 +1,27 @@
 package ar.edu.unq.grupo4.combustible.dto;
-import java.util.Set;
+
+
+import java.util.List;
+
 
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 
 public class UsuarioDto {
-		protected String name;
-		protected String email;
-		protected String password;
-		protected Set<UsuarioRol> roles;
+		private String id;
+		private String name;
+		private String email;
+		private List<String> roles;
 		
 		
-		
+		public String getEmail() {
+			return email;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
 		public String getEmail() {
 			return email;
 		}
@@ -19,21 +29,27 @@ public class UsuarioDto {
 		public void setEmail(String email) {
 			this.email = email;
 		}
-
-		public String getPassword() {
-			return password;
-		}
-
-		public void setPassword(String password) {
-			this.password = password;
-		}
-
-		
 		
 		public UsuarioDto(Usuario usuario) {
 	        this.email = usuario.getEmail();
-	        this.password = usuario.getPassword();
 	        this.name = usuario.getName();
-	        this.roles = usuario.getUsuarioRoles();
+	        this.id = usuario.getId();
+	        this.roles = usuario.getRoles();
 	    }
+
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
+
+		public List<String> getRoles() {
+			return roles;
+		}
+
+		public void setRoles(List<String> roles) {
+			this.roles = roles;
+		}
 }
