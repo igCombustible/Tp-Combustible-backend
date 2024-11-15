@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -22,12 +25,23 @@ public class Usuario {
     private String name;
     private String email;
     private String password;
+
     
     @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<UsuarioRol> usuarioRoles;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private EstadoDelUsuario estado;
 
     
+	public EstadoDelUsuario getEstado() {
+		return estado;
+	}
+	public void setEstado(EstadoDelUsuario estado) {
+		this.estado = estado;
+	}
 	public String getId() {
 		return id;
 	}
@@ -41,13 +55,14 @@ public class Usuario {
 	public Usuario() {
 	}
 	
-	public Usuario(String id, String name, String email, String password, Set<UsuarioRol> usuarioRoles) {
+	public Usuario(String id, String name, String email, String password, Set<UsuarioRol> usuarioRoles, EstadoDelUsuario estado) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.usuarioRoles = usuarioRoles;
+		this.estado = estado;
 	}
 	public void setName(String name) {
 		this.name = name;
@@ -74,4 +89,6 @@ public class Usuario {
 	public List<String> getRoles(){
 		return this.getUsuarioRoles().stream().map(x -> x.getRol().getName()).collect(Collectors.toList());
 	}
+	
+	
 }
