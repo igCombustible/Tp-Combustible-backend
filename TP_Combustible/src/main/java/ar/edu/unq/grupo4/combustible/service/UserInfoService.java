@@ -1,12 +1,15 @@
 package ar.edu.unq.grupo4.combustible.service;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.unq.grupo4.combustible.dto.LoginDto;
 import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
 import ar.edu.unq.grupo4.combustible.model.Rol;
+import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 import ar.edu.unq.grupo4.combustible.repository.UserInfoRepository;
@@ -52,6 +56,7 @@ public class UserInfoService implements UserDetailsService {
     }
     
    
+ 
     @Transactional
     public String addUser(Usuario userInfo) {
     	if (userInfo.getUsuarioRoles() != null) {
@@ -93,15 +98,48 @@ public class UserInfoService implements UserDetailsService {
 												.map(usuario -> new UsuarioDto(usuario))
 												.collect(Collectors.toList());
 		return usuariosDto;
-	}
+  }
 
-
+	
+    @Transactional(readOnly = true)
+    public List<Usuario> usuariosAlaEspera(){
+    	List<Usuario> todosLosUsuarios = repository.findAll();
+    	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.PENDIENTE)
+    			                .collect(Collectors.toList());
+    }
+    
+    
+    @Transactional(readOnly = true)
+    public List<Usuario> usuariosAceptados(){
+    	List<Usuario> todosLosUsuarios = repository.findAll();
+    	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.ACEPTADO)
+    			.collect(Collectors.toList());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    @Transactional
+    public String aceptarAlUsuario(String id) {
+    Optional<Usuario> usuario = repository.findById(id);
+    usuario.get().setEstado(EstadoDelUsuario.ACEPTADO);
+    this.userInfoRepository.save(usuario.get());
+    return "el usuario se ha aceptado";
+    }
+    
+     @Transactional
+    public String cancelarAlUsuario (String id) {
+    Optional <Usuario> usuario = userInfoRepository.findById(id);
+    usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
+    this.userInfoRepository.save(usuario.get());
+    return "el usuario se ha rechazado";
+    }
 
 }
 
-  
-
-	
-
     
-
+    

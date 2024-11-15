@@ -12,6 +12,7 @@ public class VehiculoDto {
 	private Boolean estado_vehiculo;
 	private String patente;
 	
+	
 	public String getPatente() {
 		return patente;
 	}
@@ -49,6 +50,9 @@ public class VehiculoDto {
 		this.modelo = vehiculo.get().getModelo();
 		this.ultimoValorConocidoKm = vehiculo.get().getUltimoValorConocidoKm();
 		this.estado_vehiculo = vehiculo.get().getEstado_vehiculo();
-	}
+	
+				
+		}
+	
 	
 }

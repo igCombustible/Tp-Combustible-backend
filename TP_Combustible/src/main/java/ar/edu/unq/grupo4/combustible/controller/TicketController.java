@@ -34,15 +34,10 @@ public class TicketController {
 	public List <Ticket> getAllTicketsAceptados(){
 		return ticketService.findAllAceptados();}
 	
+	
 	@GetMapping("/infoTickets/{patente}")
 	public List <Ticket> getTicketDeVehiculo(@PathVariable String patente){
 		return ticketService.findAllAceptadosPorPatente(patente);
-	}
-	
-	@GetMapping("/consumoTotalCombustible/{patente}")
-	public Integer getConsumoVehiculo(@PathVariable String patente) {
-		return ticketService.sumarCantidadDeSolicitudPorPatente(patente);
-
 	}
 	
     @GetMapping("/{id}")

@@ -51,6 +51,7 @@ CREATE TABLE combustible.vehiculo (
   patente varchar(255) NOT NULL,
   ultimo_km int DEFAULT NULL,
   estado_vehiculo boolean NOT NULL,
+  litrosConsumidos DOUBLE DEFAULT NULL,
   PRIMARY KEY (patente)  -- La clave primaria ya es única
 );
 

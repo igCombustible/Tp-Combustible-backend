@@ -3,11 +3,9 @@ package ar.edu.unq.grupo4.combustible.dto;
 
 import java.util.List;
 
+
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
-
-
-
 
 public class UsuarioDto {
 		private String id;
@@ -16,8 +14,8 @@ public class UsuarioDto {
 		private List<String> roles;
 		
 		
-		public String getName() {
-			return name;
+		public String getEmail() {
+			return email;
 		}
 
 		public void setName(String name) {
