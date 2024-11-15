@@ -87,9 +87,11 @@ public class Vehiculo {
 		this.patente = patente;
 		this.ultimoValorConocidoKm = ultimoValorConocidoKm;
 		this.estado_vehiculo = estado;
+	
 	}
 	
 	public Vehiculo() {
 		
 	}
+
 }

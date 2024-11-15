@@ -68,7 +68,7 @@ public class VehiculoController {
     
 
     @PostMapping()
-    @PreAuthorize("hasAuthority('ADMIN')")
+   @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String>  createVehiculo(@RequestBody Vehiculo vehiculo) {
         try {
         	return  ResponseEntity.ok(vehiculoService.agregarVehiculo(vehiculo));
@@ -94,7 +94,7 @@ public class VehiculoController {
         }
     }
     
-    
-    
-    
 }
+    
+    
+
