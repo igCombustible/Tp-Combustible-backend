@@ -50,5 +50,8 @@ public class VehiculoDto {
 		this.ultimoValorConocidoKm = vehiculo.get().getUltimoValorConocidoKm();
 		this.estado_vehiculo = vehiculo.get().getEstado_vehiculo();
 	}
+	public VehiculoDto() {
+		// TODO Auto-generated constructor stub
+	}
 	
 }

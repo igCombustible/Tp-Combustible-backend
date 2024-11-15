@@ -39,11 +39,6 @@ public class TicketController {
 		return ticketService.findAllAceptadosPorPatente(patente);
 	}
 	
-	@GetMapping("/consumoTotalCombustible/{patente}")
-	public Double getConsumoVehiculo(@PathVariable String patente) {
-		return ticketService.sumarCantidadDeSolicitudPorPatente(patente);
-	}
-	
 	@GetMapping("/consumoPromedioPorKm/{patente}")
 	public Double getConsumoPromedioPorKm(@PathVariable String patente) {
 		return ticketService.promedioKmPorConsumo(patente);
