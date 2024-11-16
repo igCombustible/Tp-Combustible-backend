@@ -127,15 +127,15 @@ public class UserInfoService implements UserDetailsService {
     public String aceptarAlUsuario(String id) {
     Optional<Usuario> usuario = repository.findById(id);
     usuario.get().setEstado(EstadoDelUsuario.ACEPTADO);
-    this.userInfoRepository.save(usuario.get());
+    this.repository.save(usuario.get());
     return "el usuario se ha aceptado";
     }
     
      @Transactional
     public String cancelarAlUsuario (String id) {
-    Optional <Usuario> usuario = userInfoRepository.findById(id);
+    Optional <Usuario> usuario = repository.findById(id);
     usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
-    this.userInfoRepository.save(usuario.get());
+    this.repository.save(usuario.get());
     return "el usuario se ha rechazado";
     }
 
