@@ -5,7 +5,6 @@ import java.util.List;
 
 
 import ar.edu.unq.grupo4.combustible.model.Usuario;
-import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 
 public class UsuarioDto {
 	private String id;
