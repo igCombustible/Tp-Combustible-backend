@@ -46,5 +46,5 @@ RUN mvn package -DskipTests
 # un jar, necesitamos correr el jar
 FROM eclipse-temurin:21-jre-alpine AS serve_build
 EXPOSE 8080
-COPY --from=run_build /app/target /app
-CMD ["java","-cp","app:app/lib/*","ciu.grupo1.eventos-1.0.0.jar"]
+COPY --from=run_build /app/target/TP_Combustible-0.0.1-SNAPSHOT.jar /app/
+CMD ["java", "-jar", "/app/TP_Combustible-0.0.1-SNAPSHOT.jar"]
