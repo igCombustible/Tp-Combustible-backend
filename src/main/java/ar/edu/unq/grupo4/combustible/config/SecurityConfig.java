@@ -3,6 +3,7 @@ package ar.edu.unq.grupo4.combustible.config;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,9 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthFilter authFilter;
+
+    @Value("${frontend.cors.url}")
+    private String corsUrl;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -74,11 +78,11 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-    
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Ajusta según tus orígenes permitidos
+        configuration.addAllowedOrigin(corsUrl);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*")); // Permitir todos los encabezados
         configuration.setExposedHeaders(Arrays.asList("Authorization"));

@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=ar.edu.unq.grupo4.combustible.config.DockerSecretsProcessor

@@ -1,15 +1,12 @@
 package ar.edu.unq.grupo4.combustible.service;
 
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -125,18 +122,18 @@ public class UserInfoService implements UserDetailsService {
     
     @Transactional
     public String aceptarAlUsuario(String id) {
-    Optional<Usuario> usuario = repository.findById(id);
-    usuario.get().setEstado(EstadoDelUsuario.ACEPTADO);
-    this.repository.save(usuario.get());
-    return "el usuario se ha aceptado";
+	    Optional<Usuario> usuario = repository.findById(id);
+	    usuario.get().setEstado(EstadoDelUsuario.ACEPTADO);
+	    this.repository.save(usuario.get());
+	    return "el usuario se ha aceptado";
     }
     
      @Transactional
-    public String cancelarAlUsuario (String id) {
-    Optional <Usuario> usuario = repository.findById(id);
-    usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
-    this.repository.save(usuario.get());
-    return "el usuario se ha rechazado";
+	    public String cancelarAlUsuario (String id) {
+	    Optional <Usuario> usuario = repository.findById(id);
+	    usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
+	    this.repository.save(usuario.get());
+	    return "el usuario se ha rechazado";
     }
 
 }
