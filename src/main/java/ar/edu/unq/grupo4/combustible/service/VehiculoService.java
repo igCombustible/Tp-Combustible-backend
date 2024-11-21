@@ -33,8 +33,13 @@ public class VehiculoService {
 	    
 	    
 	    public ConsumoDto consumoVehiculo(String patente) {
-	    	Optional<Vehiculo> vehiculo = vehiculoRepository.findByPatente(patente);
-	    	Double consumo = ticketService.sumarCantidadDeSolicitudPorPatente(patente);
+	    	Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
+	    	if (vehiculoOptional.isEmpty()) {
+	            throw new RuntimeException("Vehículo no encontrado para la patente: " + patente);
+	    	}
+	    	Vehiculo vehiculo = vehiculoOptional.get();
+	    	Double consumo = ticketService.sumarCantidadDeSolicitudPorVehiculo(vehiculo);
+	    	System.out.println("Se creo un ConsumoDto");
 	    	ConsumoDto consumoVehiculo = new ConsumoDto(vehiculo, consumo);
 	    	return consumoVehiculo;
 	    }

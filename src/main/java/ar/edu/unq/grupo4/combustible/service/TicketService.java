@@ -14,7 +14,6 @@ import ar.edu.unq.grupo4.combustible.model.Ticket;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.TicketRepository;
-import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
 
 @Service
 public class TicketService {
@@ -24,9 +23,9 @@ public class TicketService {
 	private UserInfoService usuarioService;
 	@Autowired
 	private VehiculoService vehiculoService;
-	
 	@Autowired
-    private VehiculoRepository vehiculoRepository;
+	private VehiculoService vehiculoRepository;
+	
 	
 	@Transactional(readOnly = true)
 	public List<Ticket> findAllEspera(){
@@ -41,15 +40,22 @@ public class TicketService {
 	}	
 	
 	@Transactional(readOnly = true)
-	public List<Ticket> findAllAceptadosPorPatente(String patente) {
-		Vehiculo vehiculo = vehiculoRepository.findByPatente(patente).orElse(null);
+	public List<Ticket> findAllAceptadosPorPatente(Vehiculo vehiculo) {
 	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
 	    return todosLosTickets;
 	}	
 	
 	@Transactional(readOnly = true)
-	public Double sumarCantidadDeSolicitudPorPatente(String patente) {
-	    List<Ticket> todosLosTickets = findAllAceptadosPorPatente(patente);
+	public List<Ticket> findAllAceptadosPorPatente(String patente) {
+		Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
+		Vehiculo vehiculo = vehiculoOptional.get();
+	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
+	    return todosLosTickets;
+	}	
+	
+	@Transactional(readOnly = true)
+	public Double sumarCantidadDeSolicitudPorVehiculo(Vehiculo vehiculo) {
+	    List<Ticket> todosLosTickets = findAllAceptadosPorPatente(vehiculo);
 	    return todosLosTickets
 	    		.stream()
 	            .mapToDouble(Ticket::getCantidadDeSolicitud)
@@ -62,7 +68,7 @@ public class TicketService {
 	    
 	    if (buscarVehiculo.isPresent()) {
 	        Vehiculo vehiculo = buscarVehiculo.get();
-	        Double consumo = sumarCantidadDeSolicitudPorPatente(patente);
+	        Double consumo = sumarCantidadDeSolicitudPorVehiculo(vehiculo);
 	        
 	        if (consumo != 0) {
 	            Double km = vehiculo.getUltimoValorConocidoKm().doubleValue();

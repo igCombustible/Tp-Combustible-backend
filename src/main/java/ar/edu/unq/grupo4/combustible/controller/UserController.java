@@ -92,7 +92,7 @@ public class UserController {
      }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('OPERADOR')")
     public ResponseEntity<String> cancelarUsuario(@PathVariable String id){
         return ResponseEntity.ok(this.service.cancelarAlUsuario(id));	
     }

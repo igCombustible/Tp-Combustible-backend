@@ -1,7 +1,5 @@
 package ar.edu.unq.grupo4.combustible.dto;
 
-import java.util.Optional;
-
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 
 public class ConsumoDto {
@@ -13,11 +11,11 @@ public class ConsumoDto {
 	
 	public ConsumoDto() {}
 	
-	public ConsumoDto(Optional<Vehiculo> vehiculo, Double consumo) {
-		this.patente = vehiculo.get().getPatente();
-		this.marca = vehiculo.get().getMarca();
-		this.modelo = vehiculo.get().getModelo();
-		this.km = vehiculo.get().getUltimoValorConocidoKm();
+	public ConsumoDto(Vehiculo vehiculo, Double consumo) {
+		this.patente = vehiculo.getPatente();
+		this.marca = vehiculo.getMarca();
+		this.modelo = vehiculo.getModelo();
+		this.km = vehiculo.getUltimoValorConocidoKm();
 		this.consumo = consumo;
 	}
 	
