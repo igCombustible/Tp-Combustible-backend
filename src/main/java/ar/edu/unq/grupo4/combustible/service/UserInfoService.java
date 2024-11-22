@@ -67,16 +67,23 @@ public class UserInfoService implements UserDetailsService {
         userInfo.setId(UUID.randomUUID().toString());
         repository.save(userInfo);
         try {
+        	Integer numeroGenerado = this.generarNumero();
             emailService.enviarEmail(
                 userInfo.getEmail(),
-                "Bienvenido a la App",
-                "Gracias por registrarte. Por favor confirma tu cuenta aquí: [ENLACE]"
-            );
+                "Bienvenido a la App de Combustible",
+                "Gracias por registrarte. Por favor verifica tu cuenta con este codigo: " + numeroGenerado
+                );
         } catch (Exception e) {
             // Log o mensaje de error
             System.err.println("Error al enviar el correo: " + e.getMessage());
         }
         return "User Added Successfully";
+    }
+    
+    
+    public int generarNumero() {
+        double fiveDigits = 100000 + Math.random() * 900000;
+        return (int) fiveDigits;
     }
 
     @Transactional(readOnly = true)
