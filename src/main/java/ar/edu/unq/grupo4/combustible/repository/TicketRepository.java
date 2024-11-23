@@ -20,7 +20,7 @@ public interface TicketRepository extends JpaRepository<Ticket, String>{
 	@EntityGraph(attributePaths = {"usuario.usuarioRoles.rol", "vehiculo"})
     List<Ticket> findByEstadoAndVehiculo(EstadoDelTicket estado, Vehiculo vehiculo);
 
-	@EntityGraph(attributePaths = {"vehiculo"})
+	@EntityGraph(attributePaths = {"usuario.usuarioRoles.rol","vehiculo"})
     List<Ticket> findByEstado(EstadoDelTicket estado);
 }
 
