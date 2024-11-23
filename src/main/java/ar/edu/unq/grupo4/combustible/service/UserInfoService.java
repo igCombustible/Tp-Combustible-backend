@@ -67,11 +67,11 @@ public class UserInfoService implements UserDetailsService {
         userInfo.setId(UUID.randomUUID().toString());
         repository.save(userInfo);
         try {
-        	Integer numeroGenerado = this.generarNumero();
             emailService.enviarEmail(
                 userInfo.getEmail(),
                 "Bienvenido a la App de Combustible",
-                "Gracias por registrarte. Por favor verifica tu cuenta con este codigo: " + numeroGenerado
+                "Gracias por registrarte. Tu cuenta queda en estado de espera hasta "
+                + "que un operador te acepte"
                 );
         } catch (Exception e) {
             // Log o mensaje de error
@@ -80,12 +80,6 @@ public class UserInfoService implements UserDetailsService {
         return "User Added Successfully";
     }
     
-    
-    public int generarNumero() {
-        double fiveDigits = 100000 + Math.random() * 900000;
-        return (int) fiveDigits;
-    }
-
     @Transactional(readOnly = true)
 	public Usuario buscarPorEmail(String username) {
 		Optional<Usuario> usuario = repository.findByEmail(username);
