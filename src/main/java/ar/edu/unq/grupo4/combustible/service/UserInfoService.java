@@ -30,6 +30,8 @@ public class UserInfoService implements UserDetailsService {
     @Autowired
     private UserInfoRepository repository;
     
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -64,9 +66,20 @@ public class UserInfoService implements UserDetailsService {
         userInfo.setPassword(encoder.encode(userInfo.getPassword()));
         userInfo.setId(UUID.randomUUID().toString());
         repository.save(userInfo);
+        try {
+            emailService.enviarEmail(
+                userInfo.getEmail(),
+                "Bienvenido a la App de Combustible",
+                "Gracias por registrarte. Tu cuenta queda en estado de espera hasta "
+                + "que un operador te acepte"
+                );
+        } catch (Exception e) {
+            // Log o mensaje de error
+            System.err.println("Error al enviar el correo: " + e.getMessage());
+        }
         return "User Added Successfully";
     }
-
+    
     @Transactional(readOnly = true)
 	public Usuario buscarPorEmail(String username) {
 		Optional<Usuario> usuario = repository.findByEmail(username);
@@ -100,25 +113,16 @@ public class UserInfoService implements UserDetailsService {
 	
     @Transactional(readOnly = true)
     public List<Usuario> usuariosAlaEspera(){
-    	List<Usuario> todosLosUsuarios = repository.findAll();
-    	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.PENDIENTE)
-    			                .collect(Collectors.toList());
+    	List<Usuario> todosLosUsuarios = repository.findByEstado(EstadoDelUsuario.PENDIENTE);
+    	return todosLosUsuarios;
     }
     
     
     @Transactional(readOnly = true)
     public List<Usuario> usuariosAceptados(){
-    	List<Usuario> todosLosUsuarios = repository.findAll();
-    	return todosLosUsuarios.stream().filter(u->u.getEstado() == EstadoDelUsuario.ACEPTADO)
-    			.collect(Collectors.toList());
+    	List<Usuario> todosLosUsuarios = repository.findByEstado(EstadoDelUsuario.ACEPTADO);
+    	return todosLosUsuarios;
     }
-    
-    
-    
-    
-    
-    
-    
     
     @Transactional
     public String aceptarAlUsuario(String id) {
@@ -128,13 +132,13 @@ public class UserInfoService implements UserDetailsService {
 	    return "el usuario se ha aceptado";
     }
     
-     @Transactional
-	    public String cancelarAlUsuario (String id) {
-	    Optional <Usuario> usuario = repository.findById(id);
-	    usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
-	    this.repository.save(usuario.get());
-	    return "el usuario se ha rechazado";
-    }
+	@Transactional
+	public String cancelarAlUsuario (String id) {
+		Optional <Usuario> usuario = repository.findById(id);
+		usuario.get().setEstado(EstadoDelUsuario.RECHAZADO);
+		this.repository.save(usuario.get());
+		return "el usuario se ha rechazado";
+	}
 
 }
 
