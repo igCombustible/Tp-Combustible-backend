@@ -108,6 +108,14 @@ public class UserController {
     public List<UsuarioDto> buscarTodosLosUsuarios(){
     	return this.service.buscarTodos();
     }
+
+    @DeleteMapping("deshabilita/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<String> deshabilitarPassword(@PathVariable String id){
+      return ResponseEntity.ok(this.service.deshabilitar(id));	
+  }
+
+
 }  
 
 

@@ -34,8 +34,22 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado")
     private EstadoDelUsuario estado;
+   
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = " password_estado")
+    private EstadoPassword estadop;
 
     
+    
+    
+    
+	public EstadoPassword getEstadop() {
+		return estadop;
+	}
+	public void setEstadop(EstadoPassword estadop) {
+		this.estadop = estadop;
+	}
 	public EstadoDelUsuario getEstado() {
 		return estado;
 	}
@@ -55,7 +69,7 @@ public class Usuario {
 	public Usuario() {
 	}
 	
-	public Usuario(String id, String name, String email, String password, Set<UsuarioRol> usuarioRoles, EstadoDelUsuario estado) {
+	public Usuario(String id, String name, String email, String password, Set<UsuarioRol> usuarioRoles, EstadoDelUsuario estado, EstadoPassword estadop) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,6 +77,7 @@ public class Usuario {
 		this.password = password;
 		this.usuarioRoles = usuarioRoles;
 		this.estado = estado;
+		this.estadop = estadop;
 	}
 	public void setName(String name) {
 		this.name = name;

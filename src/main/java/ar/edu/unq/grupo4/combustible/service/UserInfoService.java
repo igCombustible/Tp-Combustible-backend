@@ -18,6 +18,7 @@ import ar.edu.unq.grupo4.combustible.dto.LoginDto;
 import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
 import ar.edu.unq.grupo4.combustible.model.Rol;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
+import ar.edu.unq.grupo4.combustible.model.EstadoPassword;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 import ar.edu.unq.grupo4.combustible.repository.UserInfoRepository;
@@ -140,7 +141,28 @@ public class UserInfoService implements UserDetailsService {
 		return "el usuario se ha rechazado";
 	}
 
+
+	@Transactional
+	public String deshabilitar (String id) {
+		Optional <Usuario> usuario = repository.findById(id);
+		if (usuario.isEmpty()) {
+			throw new RuntimeException("usuario no encontrado");
+		}
+		
+		Usuario user = usuario.get();
+		
+		if (user.getEstadop() == EstadoPassword.DESHABILITADO){
+		return "la contrasna ya esta dehabilitada para el usuario"
+				};
+			this.repository.save(usuario.get());
+		return "se ha deshabilitado la contraseña del usuario";
+		}
 }
+
+
+	
+	
+	
 
     
     
