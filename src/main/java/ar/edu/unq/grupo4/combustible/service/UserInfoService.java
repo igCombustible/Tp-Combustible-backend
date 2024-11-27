@@ -141,22 +141,16 @@ public class UserInfoService implements UserDetailsService {
 		return "el usuario se ha rechazado";
 	}
 
-
 	@Transactional
 	public String deshabilitar (String id) {
 		Optional <Usuario> usuario = repository.findById(id);
-		if (usuario.isEmpty()) {
-			throw new RuntimeException("usuario no encontrado");
-		}
+		usuario.get().setEstadop(EstadoPassword.DESHABILITADO);
+		this.repository.save(usuario.get());
+		return " se deshabilito la password";
+	}
 		
-		Usuario user = usuario.get();
-		
-		if (user.getEstadop() == EstadoPassword.DESHABILITADO){
-		return "la contrasna ya esta dehabilitada para el usuario"
-				};
-			this.repository.save(usuario.get());
-		return "se ha deshabilitado la contraseña del usuario";
-		}
+	
+
 }
 
 
