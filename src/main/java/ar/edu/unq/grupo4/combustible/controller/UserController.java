@@ -112,7 +112,6 @@ public class UserController {
     	return this.service.buscarTodos();
     }
     
-    
     @PostMapping("/solicitar-codigo")
     public ResponseEntity<String> solicitarCodigoVerificacion(@RequestBody EmailDto email) {
     	return ResponseEntity.ok(this.service.generarYEnviarCodigo(email));
@@ -134,6 +133,13 @@ public class UserController {
     	return ResponseEntity.ok(this.service.restablecerContrasenia(contraseniaDto));
     }
     
+
+    @DeleteMapping("deshabilita/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> deshabilitarPassword(@PathVariable String id){
+      return ResponseEntity.ok(this.service.deshabilitar(id));	
+    }
+
 }  
 
 

@@ -4,6 +4,7 @@ package ar.edu.unq.grupo4.combustible.dto;
 import java.util.List;
 
 import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
+import ar.edu.unq.grupo4.combustible.model.EstadoPassword;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 
 public class UsuarioDto {
@@ -12,6 +13,7 @@ public class UsuarioDto {
 	private String email;
 	private List<String> roles;
 	private EstadoDelUsuario estado;
+	private EstadoPassword estadop;
 	
 	
 	public UsuarioDto(Usuario usuario) {
@@ -20,6 +22,7 @@ public class UsuarioDto {
         this.id = usuario.getId();
         this.roles = usuario.getRoles();
         this.estado = usuario.getEstado();
+        this.setEstadop(usuario.getEstadop());
     }
 
 
@@ -70,6 +73,16 @@ public class UsuarioDto {
 
 	public void setEstado(EstadoDelUsuario estado) {
 		this.estado = estado;
+	}
+
+
+	public EstadoPassword getEstadop() {
+		return estadop;
+	}
+
+
+	public void setEstadop(EstadoPassword estadop) {
+		this.estadop = estadop;
 	}
 	
 	

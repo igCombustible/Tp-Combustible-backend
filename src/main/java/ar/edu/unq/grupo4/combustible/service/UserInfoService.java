@@ -23,6 +23,7 @@ import ar.edu.unq.grupo4.combustible.dto.VerificacionDto;
 import ar.edu.unq.grupo4.combustible.model.Rol;
 import ar.edu.unq.grupo4.combustible.model.CodigoVerificacion;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
+import ar.edu.unq.grupo4.combustible.model.EstadoPassword;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 import ar.edu.unq.grupo4.combustible.repository.UserInfoRepository;
@@ -212,7 +213,22 @@ public class UserInfoService implements UserDetailsService {
         return "se restablecio su contrasenia correctamente";
     }
 
+	@Transactional
+	public String deshabilitar (String id) {
+		Optional <Usuario> usuario = repository.findById(id);
+		usuario.get().setEstadop(EstadoPassword.DESHABILITADO);
+		this.repository.save(usuario.get());
+		return " se deshabilito la contraseña";
+	}
+		
+	
+
 }
+
+
+	
+	
+	
 
     
     

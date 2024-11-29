@@ -13,6 +13,10 @@ CREATE TABLE combustible.usuario (
   UNIQUE KEY index_usuario_email (email)
 );
 
+ALTER TABLE combustible.Usuario 
+ADD COLUMN password_estado VARCHAR(20) NOT NULL DEFAULT 'HABILITADO';
+
+
 INSERT into combustible.usuario(id,email,name,password) 
 VALUES (UUID(),'admin@gmail.com','admin','admin');
 
