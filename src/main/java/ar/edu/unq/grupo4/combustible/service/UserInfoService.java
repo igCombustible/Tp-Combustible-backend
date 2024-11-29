@@ -146,7 +146,7 @@ public class UserInfoService implements UserDetailsService {
 		Optional <Usuario> usuario = repository.findById(id);
 		usuario.get().setEstadop(EstadoPassword.DESHABILITADO);
 		this.repository.save(usuario.get());
-		return " se deshabilito la password";
+		return " se deshabilito la contraseña";
 	}
 		
 	
