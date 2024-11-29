@@ -1,6 +1,7 @@
 package ar.edu.unq.grupo4.combustible.service;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,14 +15,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.unq.grupo4.combustible.dto.ContraseniaDto;
+import ar.edu.unq.grupo4.combustible.dto.EmailDto;
 import ar.edu.unq.grupo4.combustible.dto.LoginDto;
 import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
+import ar.edu.unq.grupo4.combustible.dto.VerificacionDto;
 import ar.edu.unq.grupo4.combustible.model.Rol;
+import ar.edu.unq.grupo4.combustible.model.CodigoVerificacion;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelUsuario;
 import ar.edu.unq.grupo4.combustible.model.EstadoPassword;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.UsuarioRol;
 import ar.edu.unq.grupo4.combustible.repository.UserInfoRepository;
+import ar.edu.unq.grupo4.combustible.repository.CodigoVerificacionRepository;
 import ar.edu.unq.grupo4.combustible.security.UserInfoDetails;
 
 
@@ -33,6 +39,10 @@ public class UserInfoService implements UserDetailsService {
     
     @Autowired
     private EmailService emailService;
+    
+    @Autowired
+    private CodigoVerificacionRepository codigoVerificacionRepository;
+    
 
     @Autowired
     private PasswordEncoder encoder;
@@ -140,6 +150,68 @@ public class UserInfoService implements UserDetailsService {
 		this.repository.save(usuario.get());
 		return "el usuario se ha rechazado";
 	}
+	
+	
+	public String generarYEnviarCodigo(EmailDto unEmail) {
+		String email = unEmail.getEmail();
+		System.out.println(email);
+		Optional<Usuario> usuario = this.repository.findByEmail(email);
+	    if (!usuario.isPresent()) {
+	        throw new IllegalArgumentException("El correo no esta registrado.");
+	    }
+        
+        int codigo = generarCodigoAleatorio();
+
+        
+        Timestamp fechaDeExpiracion = new Timestamp(System.currentTimeMillis() + 2 * 60 * 1000); 
+
+        
+        CodigoVerificacion codigoVerificacion = new CodigoVerificacion(UUID.randomUUID().toString(), email, codigo, fechaDeExpiracion);
+        codigoVerificacionRepository.save(codigoVerificacion);
+
+        
+        emailService.enviarEmail(
+                email ,
+                "Bienvenido a la App de Combustible",
+                "Gracias por registrarte. Por favor verifica tu cuenta con este codigo: " + codigo
+                );
+
+        return "se envio el correo correctamente";
+    }
+    private int generarCodigoAleatorio() {
+    	double fiveDigits = 100000 + Math.random() * 900000;
+        return (int) fiveDigits;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean verificarCodigo(VerificacionDto verificar) {
+    	Integer codigo = verificar.getCodigo();
+    	String email = verificar.getEmail();
+        
+        Optional<CodigoVerificacion> codigoVerificacionOpt = codigoVerificacionRepository.findByEmail(email);
+
+        if (codigoVerificacionOpt.isPresent()) {
+            CodigoVerificacion codigoVerificacion = codigoVerificacionOpt.get();
+
+            
+            if (codigoVerificacion.getCodigo_verificacion() == codigo &&
+                codigoVerificacion.getExpiracion().after(new Timestamp(System.currentTimeMillis()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @Transactional
+    public String restablecerContrasenia(ContraseniaDto contraseniaDto) {
+    	String nuevaContrasenia = contraseniaDto.getNuevaContrasenia();
+    	String email = contraseniaDto.getEmail();
+        Usuario usuario = this.repository.findByEmail(email).get();
+        String contraseniaEncode = encoder.encode(nuevaContrasenia);
+        usuario.setPassword(contraseniaEncode);
+        this.repository.save(usuario);
+        codigoVerificacionRepository.deleteByEmail(email);
+        return "se restablecio su contrasenia correctamente";
+    }
 
 	@Transactional
 	public String deshabilitar (String id) {

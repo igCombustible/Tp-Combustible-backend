@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.unq.grupo4.combustible.dto.ContraseniaDto;
+import ar.edu.unq.grupo4.combustible.dto.EmailDto;
 import ar.edu.unq.grupo4.combustible.dto.LoginDto;
 
 import ar.edu.unq.grupo4.combustible.dto.RolDto;
 import ar.edu.unq.grupo4.combustible.model.Rol;
 
 import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
+import ar.edu.unq.grupo4.combustible.dto.VerificacionDto;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.request.AuthRequest;
 import ar.edu.unq.grupo4.combustible.service.JwtService;
@@ -108,13 +111,34 @@ public class UserController {
     public List<UsuarioDto> buscarTodosLosUsuarios(){
     	return this.service.buscarTodos();
     }
+    
+    @PostMapping("/solicitar-codigo")
+    public ResponseEntity<String> solicitarCodigoVerificacion(@RequestBody EmailDto email) {
+    	return ResponseEntity.ok(this.service.generarYEnviarCodigo(email));
+    }
+    
+    
+    @PostMapping("/verificar-codigo")
+    public ResponseEntity<String> verificarCodigo(@RequestBody VerificacionDto verificar) {
+        boolean esValido = this.service.verificarCodigo(verificar);
+        if (esValido) {
+            return ResponseEntity.ok("Código verificado correctamente.");
+        } else {
+            return ResponseEntity.badRequest().body("El código no es válido o ha expirado.");
+        }
+    }
+    
+    @PostMapping("/restablecer-contrasenia")
+    public ResponseEntity<String> restablecerContrasenia(@RequestBody ContraseniaDto contraseniaDto) {
+    	return ResponseEntity.ok(this.service.restablecerContrasenia(contraseniaDto));
+    }
+    
 
     @DeleteMapping("deshabilita/{id}")
-  @PreAuthorize("hasAuthority('ADMIN')")
-  public ResponseEntity<String> deshabilitarPassword(@PathVariable String id){
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> deshabilitarPassword(@PathVariable String id){
       return ResponseEntity.ok(this.service.deshabilitar(id));	
-  }
-
+    }
 
 }  
 
