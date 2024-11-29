@@ -71,7 +71,14 @@ CREATE TABLE combustible.ticket (
     FOREIGN KEY (patente) REFERENCES combustible.vehiculo(patente)
 ); 
 
-
+CREATE TABLE codigo_verificacion (
+    id CHAR(36) PRIMARY KEY,               
+    email VARCHAR(255) NOT NULL,            
+    codigo_verificacion VARCHAR(6) NOT NULL,  
+    fecha_de_solicitud TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+    expiracion TIMESTAMP NOT NULL,          
+    FOREIGN KEY (email) REFERENCES usuario(email) 
+);
 
 
 -- INSERT INTO combustible.ticket(id, cantidadDeSolicitud, fecha_de_solicitud, usuario_id, vehiculo_id, estado)
