@@ -73,7 +73,7 @@ public class UserController {
             .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         if (usuario.getEstadop() == EstadoPassword.DESHABILITADO) {
-            throw new IllegalStateException("Usuario deshabilitado. Contacte al administrador.");
+            throw new IllegalStateException("Contraseña del usuario deshabilitada. Contacte al administrador.");
         }
  
         Authentication authentication = authenticationManager.authenticate(
