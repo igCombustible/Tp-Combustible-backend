@@ -213,13 +213,31 @@ public class UserInfoService implements UserDetailsService {
         return "se restablecio su contrasenia correctamente";
     }
 
-	@Transactional
-	public String deshabilitar (String id) {
-		Optional <Usuario> usuario = repository.findById(id);
-		usuario.get().setEstadop(EstadoPassword.DESHABILITADO);
-		this.repository.save(usuario.get());
-		return " se deshabilito la contraseña";
-	}
+    @Transactional
+    public String deshabilitar(String id) {
+        Optional<Usuario> usuarioOpt = repository.findById(id);
+
+       
+        Usuario usuario = usuarioOpt.get();
+        usuario.setEstadop(EstadoPassword.DESHABILITADO);
+        repository.save(usuario);
+
+        
+        try {
+            emailService.enviarEmail(
+                usuario.getEmail(),
+                "Contraseña deshabilitada",
+                "Estimado usuario, su contraseña ha sido deshabilitada temporalmente. "
+                + "Un administrador revisará su caso y habilitará nuevamente su acceso."
+            );
+        } catch (Exception e) {
+            System.err.println("Error al enviar el correo: " + e.getMessage());
+        }
+
+        return "Se deshabilitó la contraseña y se notificó al usuario.";
+    }
+
+
 		
 	
 
