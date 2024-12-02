@@ -1,15 +1,25 @@
 package ar.edu.unq.grupo4.combustible.model;
 
+import java.util.List;
+
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.NamedAttributeNode;
 
 @Entity
+@NamedEntityGraph(
+	    name = "Vehiculo.tickets",
+	    attributeNodes = @NamedAttributeNode("tickets"))
 @SQLDelete(sql = "UPDATE vehiculo SET deleted=true WHERE patente = ?")
 @FilterDef(
 		name = "deletedCarFilter",
@@ -29,6 +39,10 @@ public class Vehiculo {
 	private Integer ultimoValorConocidoKm;
 	private Boolean deleted;
 	private Boolean estado_vehiculo;
+	
+	@OneToMany(mappedBy = "vehiculo")
+	@JsonIgnore
+    private List<Ticket> tickets;
 
 
 	public Boolean getEstado_vehiculo() {
@@ -79,6 +93,14 @@ public class Vehiculo {
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
+	
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
 
 	public Vehiculo(String marca, String modelo, String patente, Integer ultimoValorConocidoKm, Boolean estado) {
 		super();
@@ -93,5 +115,6 @@ public class Vehiculo {
 	public Vehiculo() {
 		
 	}
+
 
 }

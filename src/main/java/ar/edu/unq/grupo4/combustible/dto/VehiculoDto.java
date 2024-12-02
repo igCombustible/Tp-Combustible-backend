@@ -4,14 +4,24 @@ import java.util.Optional;
 
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 
-
 public class VehiculoDto {
+	private String patente;
 	private String marca;
 	private String modelo;
-	private Integer ultimoValorConocidoKm;
-	private Boolean estado_vehiculo;
-	private String patente;
+	private Integer km;
+	private Double consumo;
+	private Double promedioKilometros;
 	
+	public VehiculoDto(Optional<Vehiculo> unVehiculo) {}
+	
+	public VehiculoDto(String patente, String marca, String modelo,Integer km, Double consumo) {
+        this.patente = patente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.km = km;
+        this.consumo = consumo;
+        this.setPromedioKilometros(km/consumo);
+    }
 	
 	public String getPatente() {
 		return patente;
@@ -31,28 +41,26 @@ public class VehiculoDto {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	public Integer getUltimoValorConocidoKm() {
-		return ultimoValorConocidoKm;
+	public Double getConsumo() {
+		return consumo;
 	}
-	public void setUltimoValorConocidoKm(Integer ultimoValorConocidoKm) {
-		this.ultimoValorConocidoKm = ultimoValorConocidoKm;
+	public void setConsumo(Double consumo) {
+		this.consumo = consumo;
 	}
-	public Boolean getEstado_vehiculo() {
-		return estado_vehiculo;
+
+	public Integer getKm() {
+		return km;
 	}
-	public void setEstado_vehiculo(Boolean estado_vehiculo) {
-		this.estado_vehiculo = estado_vehiculo;
+
+	public void setKm(Integer km) {
+		this.km = km;
 	}
-	
-	public VehiculoDto(Optional<Vehiculo> vehiculo) {
-		this.patente = vehiculo.get().getPatente();
-		this.marca = vehiculo.get().getMarca();
-		this.modelo = vehiculo.get().getModelo();
-		this.ultimoValorConocidoKm = vehiculo.get().getUltimoValorConocidoKm();
-		this.estado_vehiculo = vehiculo.get().getEstado_vehiculo();
-	
-				
-		}
-	
-	
+
+	public Double getPromedioKilometros() {
+		return promedioKilometros;
+	}
+
+	public void setPromedioKilometros(Double promedioKilometros) {
+		this.promedioKilometros = promedioKilometros;
+	}
 }

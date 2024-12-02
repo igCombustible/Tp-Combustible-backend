@@ -14,6 +14,7 @@ import ar.edu.unq.grupo4.combustible.model.Ticket;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.TicketRepository;
+import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
 
 @Service
 public class TicketService {
@@ -24,7 +25,7 @@ public class TicketService {
 	@Autowired
 	private VehiculoService vehiculoService;
 	@Autowired
-	private VehiculoService vehiculoRepository;
+	private VehiculoRepository vehiculoRepository;
 	
 	
 	@Transactional(readOnly = true)

@@ -1,7 +1,6 @@
 package ar.edu.unq.grupo4.combustible.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.unq.grupo4.combustible.dto.ConsumoDto;
-import ar.edu.unq.grupo4.combustible.dto.PromedioDto;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.service.VehiculoService;
@@ -35,29 +32,12 @@ public class VehiculoController {
         return vehiculoService.findAll();
     }
 	
-	@GetMapping("/consumo/{patente}")
-	public ConsumoDto getConsumoVehiculo (@PathVariable String patente) {
-		return vehiculoService.consumoVehiculo(patente);
+	
+	@GetMapping("/estadisticas")
+	public List<VehiculoDto> getConsumosDeTodosVehiculos() {
+	    return vehiculoService.obtenerVehiculosConTicketsAceptados();
 	}
 	
-	@GetMapping("/promedio/{patente}")
-	public PromedioDto getPromedioConsumo (@PathVariable String patente) {
-		return vehiculoService.promedioVehiculo(patente);
-	}
-	
-	@GetMapping("/consumos")
-	public List<ConsumoDto> getConsumosDeTodosVehiculos() {
-	    return vehiculoService.findAll().stream()
-	        .map(vehiculo -> vehiculoService.consumoVehiculo(vehiculo.getPatente()))
-	        .collect(Collectors.toList());
-	}
-	
-	@GetMapping("/promedios")
-	public List<PromedioDto> getPromediosDeTodosVehiculos() {
-	    return vehiculoService.findAll().stream()
-	        .map(vehiculo -> vehiculoService.promedioVehiculo(vehiculo.getPatente()))
-	        .collect(Collectors.toList());
-	}
 
     @GetMapping("/{patente}")
     public ResponseEntity<Vehiculo> getVehiculo(@PathVariable String patente) {
