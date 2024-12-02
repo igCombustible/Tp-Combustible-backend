@@ -3,6 +3,7 @@ package ar.edu.unq.grupo4.combustible.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
@@ -27,11 +28,13 @@ import ar.edu.unq.grupo4.combustible.dto.EmailDto;
 import ar.edu.unq.grupo4.combustible.dto.LoginDto;
 
 import ar.edu.unq.grupo4.combustible.dto.RolDto;
+import ar.edu.unq.grupo4.combustible.model.EstadoPassword;
 import ar.edu.unq.grupo4.combustible.model.Rol;
 
 import ar.edu.unq.grupo4.combustible.dto.UsuarioDto;
 import ar.edu.unq.grupo4.combustible.dto.VerificacionDto;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
+import ar.edu.unq.grupo4.combustible.repository.UserInfoRepository;
 import ar.edu.unq.grupo4.combustible.request.AuthRequest;
 import ar.edu.unq.grupo4.combustible.service.JwtService;
 import ar.edu.unq.grupo4.combustible.service.RolService;
@@ -54,6 +57,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private UserInfoRepository repository;
 
     @PostMapping("/registrarse")
     public String addNewUser(@RequestBody Usuario userInfo) {
@@ -63,6 +69,13 @@ public class UserController {
     
     @PostMapping("/generateToken")
     public LoginDto authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        Usuario usuario = repository.findByEmail(authRequest.getUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        if (usuario.getEstadop() == EstadoPassword.DESHABILITADO) {
+            throw new IllegalStateException("Contraseña del usuario deshabilitada. Contacte al administrador.");
+        }
+ 
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
@@ -72,9 +85,10 @@ public class UserController {
             LoginDto loginDto = service.buscarUsuario(authRequest.getUsername(), token);
             return loginDto;
         } else {
-            throw new UsernameNotFoundException("Invalid user request!");
+            throw new UsernameNotFoundException("Solicitud de usuario inválida");
         }
     }
+
     
     
     @GetMapping("/espera")
