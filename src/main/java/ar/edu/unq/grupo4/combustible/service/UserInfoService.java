@@ -237,7 +237,13 @@ public class UserInfoService implements UserDetailsService {
         return "Se deshabilitó la contraseña y se notificó al usuario.";
     }
 
-
+    @Transactional
+    public String habilitar(String id) {
+	    Optional<Usuario> usuario = repository.findById(id);
+	    usuario.get().setEstadop(EstadoPassword.HABILITADO);
+	    this.repository.save(usuario.get());
+	    return "el usuario se ha habilitado";
+    }
 		
 	
 

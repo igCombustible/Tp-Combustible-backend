@@ -154,6 +154,14 @@ public class UserController {
       return ResponseEntity.ok(this.service.deshabilitar(id));	
     }
 
-}  
+
+    @PostMapping("/habilitada/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String> habilitarPassword(@PathVariable String id){
+      return ResponseEntity.ok(this.service.habilitar(id));	
+    }
+  }
+
+  
 
 
