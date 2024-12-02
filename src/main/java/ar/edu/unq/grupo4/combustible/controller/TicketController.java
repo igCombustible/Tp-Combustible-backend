@@ -63,12 +63,7 @@ public class TicketController {
     public String aceptarTicket(@PathVariable String id) {
     	return this.ticketService.confirmar(id);
     }
-    
-//    @PutMapping("/{id}")
-//    public String cancelarTicket(@PathVariable String id) {
-//    	return this.ticketService.cancelar(id);
-//    }
-    
+ 
 }
 
 
