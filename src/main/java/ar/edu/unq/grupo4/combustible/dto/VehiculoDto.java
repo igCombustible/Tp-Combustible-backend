@@ -9,8 +9,6 @@ public class VehiculoDto {
 	private String marca;
 	private String modelo;
 	private Integer km;
-	private Double consumo;
-	private Double promedioKilometros;
 	
 	public VehiculoDto(Optional<Vehiculo> unVehiculo) {}
 	
@@ -19,8 +17,6 @@ public class VehiculoDto {
         this.marca = marca;
         this.modelo = modelo;
         this.km = km;
-        this.consumo = consumo;
-        this.setPromedioKilometros(km/consumo);
     }
 	
 	public String getPatente() {
@@ -41,12 +37,6 @@ public class VehiculoDto {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	public Double getConsumo() {
-		return consumo;
-	}
-	public void setConsumo(Double consumo) {
-		this.consumo = consumo;
-	}
 
 	public Integer getKm() {
 		return km;
@@ -54,13 +44,5 @@ public class VehiculoDto {
 
 	public void setKm(Integer km) {
 		this.km = km;
-	}
-
-	public Double getPromedioKilometros() {
-		return promedioKilometros;
-	}
-
-	public void setPromedioKilometros(Double promedioKilometros) {
-		this.promedioKilometros = promedioKilometros;
 	}
 }

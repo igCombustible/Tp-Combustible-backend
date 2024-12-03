@@ -4,11 +4,13 @@ package ar.edu.unq.grupo4.combustible.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.unq.grupo4.combustible.dto.InfoVehiculoDto;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelTicket;
 import ar.edu.unq.grupo4.combustible.model.Ticket;
@@ -64,30 +66,61 @@ public class VehiculoService {
 			
 		}
 	    
-	    public List<VehiculoDto> obtenerVehiculosConTicketsAceptados() {
-	    	List<Vehiculo> vehiculos = vehiculoRepository.findVehiculosWithTicketsAceptados();
+	    @Transactional
+	    public InfoVehiculoDto obtenerVehiculosConTicketsAceptados(String patente) {
+	    	Vehiculo vehiculo = this.vehiculoRepository.findDistinctByPatenteAndTickets_EstadoAndDeletedFalse(patente, EstadoDelTicket.ACEPTADO);
+	    	
+	    	Hibernate.initialize(vehiculo.getTickets());
+	    	
+	    	List<Ticket> tickets = vehiculo.getTickets().stream()
+        		    .filter(ticket -> ticket.getEstado() == EstadoDelTicket.ACEPTADO)
+        		    .filter(ticket -> ticket.getVehiculo() != null && !ticket.getVehiculo().getDeleted())
+        		    .collect(Collectors.toList());
+	    	
+	    	Integer consumo = tickets.stream()
+	                .mapToInt(ticket -> ticket.getCantidadDeSolicitud() != null ? ticket.getCantidadDeSolicitud() : 0)
+	                .sum();
+	    	
+	    	InfoVehiculoDto infoVehiculoDto = new InfoVehiculoDto (
+	    			vehiculo.getPatente(),
+	                vehiculo.getMarca(),
+	                vehiculo.getModelo(),
+	                vehiculo.getUltimoValorConocidoKm(),
+	                consumo,
+	                tickets);
+	    			
+	    	return infoVehiculoDto;	
+	    }
+	    
+	    @Transactional
+	    public List<InfoVehiculoDto> getInfoDeTodosLosVehiculos() {
+	    	List<Vehiculo> vehiculos = vehiculoRepository.findDistinctByTickets_EstadoAndDeletedFalse(EstadoDelTicket.ACEPTADO);
 	        
-	        List<VehiculoDto> consumoDtos = new ArrayList<>();
+	        List<InfoVehiculoDto> infoVehiculosDtos = new ArrayList<>();
 	      
 	        for (Vehiculo vehiculo : vehiculos) {
 	            
-	        	Double consumoTotal = vehiculo.getTickets().stream()
-	        		    .filter(ticket -> ticket.getEstado() == EstadoDelTicket.ACEPTADO)  
-	        		    .filter(ticket -> !ticket.getVehiculo().getDeleted()) 
-	        		    .mapToDouble(Ticket::getCantidadDeSolicitud)  
-	        		    .sum();  
+	        	List<Ticket> tickets = vehiculo.getTickets().stream()
+	        		    .filter(ticket -> ticket.getEstado() == EstadoDelTicket.ACEPTADO)
+	        		    .filter(ticket -> ticket.getVehiculo() != null && !ticket.getVehiculo().getDeleted())
+	        		    .collect(Collectors.toList());
+	        		    
+	        	Integer consumo = tickets.stream()
+	                    .mapToInt(ticket -> ticket.getCantidadDeSolicitud() != null ? ticket.getCantidadDeSolicitud() : 0)
+	                    .sum();
 
-	            VehiculoDto consumoDto = new VehiculoDto(
+	            InfoVehiculoDto infoVehiculoDto = new InfoVehiculoDto(
 	                vehiculo.getPatente(),
 	                vehiculo.getMarca(),
 	                vehiculo.getModelo(),
 	                vehiculo.getUltimoValorConocidoKm(),
-	                consumoTotal
+	                consumo,
+	                tickets
 	            );
 	            
-	            consumoDtos.add(consumoDto);
+	            infoVehiculosDtos.add(infoVehiculoDto);
 	        }
-	        return consumoDtos;
+	        return infoVehiculosDtos;
 	    }
 
 	}

@@ -35,11 +35,6 @@ public class TicketController {
 		return ticketService.findAllAceptados();}
 	
 	
-	@GetMapping("/infoTickets/{patente}")
-	public List <Ticket> getTicketDeVehiculo(@PathVariable String patente){
-		return ticketService.findAllAceptadosPorPatente(patente);
-	}
-	
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable String id) {
         return ticketService.getTicketById(id)
@@ -63,11 +58,6 @@ public class TicketController {
     public String aceptarTicket(@PathVariable String id) {
     	return this.ticketService.confirmar(id);
     }
-    
-//    @PutMapping("/{id}")
-//    public String cancelarTicket(@PathVariable String id) {
-//    	return this.ticketService.cancelar(id);
-//    }
     
 }
 

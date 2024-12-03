@@ -14,7 +14,6 @@ import ar.edu.unq.grupo4.combustible.model.Ticket;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.TicketRepository;
-import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
 
 @Service
 public class TicketService {
@@ -24,8 +23,6 @@ public class TicketService {
 	private UserInfoService usuarioService;
 	@Autowired
 	private VehiculoService vehiculoService;
-	@Autowired
-	private VehiculoRepository vehiculoRepository;
 	
 	
 	@Transactional(readOnly = true)
@@ -46,43 +43,6 @@ public class TicketService {
 	    return todosLosTickets;
 	}	
 	
-	@Transactional(readOnly = true)
-	public List<Ticket> findAllAceptadosPorPatente(String patente) {
-		Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
-		Vehiculo vehiculo = vehiculoOptional.get();
-	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
-	    return todosLosTickets;
-	}	
-	
-	@Transactional(readOnly = true)
-	public Double sumarCantidadDeSolicitudPorVehiculo(Vehiculo vehiculo) {
-	    List<Ticket> todosLosTickets = findAllAceptadosPorPatente(vehiculo);
-	    return todosLosTickets
-	    		.stream()
-	            .mapToDouble(Ticket::getCantidadDeSolicitud)
-	            .sum();
-	}
-	
-	
-	public Double promedioKmPorConsumo(String patente) {
-	    Optional<Vehiculo> buscarVehiculo = vehiculoService.findByPatente(patente);
-	    
-	    if (buscarVehiculo.isPresent()) {
-	        Vehiculo vehiculo = buscarVehiculo.get();
-	        Double consumo = sumarCantidadDeSolicitudPorVehiculo(vehiculo);
-	        
-	        if (consumo != 0) {
-	            Double km = vehiculo.getUltimoValorConocidoKm().doubleValue();
-	            return km / consumo;
-	        } else {
-	            System.out.println("El consumo es cero, no se puede calcular el promedio.");
-	            return null;
-	        }
-	    } else {
-	        System.out.println("Vehículo no encontrado con la patente: " + patente);
-	        return null; 
-	    }
-	}
 	
 	public Optional<Ticket> getTicketById(String id) {
 	    return ticketRepository.findById(id);

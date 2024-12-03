@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.unq.grupo4.combustible.dto.InfoVehiculoDto;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.service.VehiculoService;
@@ -32,13 +33,16 @@ public class VehiculoController {
         return vehiculoService.findAll();
     }
 	
-	
 	@GetMapping("/estadisticas")
-	public List<VehiculoDto> getConsumosDeTodosVehiculos() {
-	    return vehiculoService.obtenerVehiculosConTicketsAceptados();
+	public List<InfoVehiculoDto> getInfoDeTodosVehiculos() {
+	    return vehiculoService.getInfoDeTodosLosVehiculos();
 	}
 	
-
+	@GetMapping("/info/{patente}")
+	public InfoVehiculoDto getInfoDelVehiculos(@PathVariable String patente) {
+	    return vehiculoService.obtenerVehiculosConTicketsAceptados(patente);
+	}
+	
     @GetMapping("/{patente}")
     public ResponseEntity<Vehiculo> getVehiculo(@PathVariable String patente) {
         return vehiculoService.findByPatente(patente)

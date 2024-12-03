@@ -39,9 +39,6 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(name = " password_estado")
     private EstadoPassword estadop;
-
-    
-    
     
     
 	public EstadoPassword getEstadop() {
