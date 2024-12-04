@@ -10,6 +10,12 @@ public class TicketDto {
     private String userName; 
     private String patente;  
 
+    public TicketDto (String id, Ticket ticket, String username, String patente) {
+    	this.id = id;
+    	this.ticket = ticket;
+    	this.userName = username;
+    	this.patente = patente;
+    }
     // Getters y Setters
     public String getId() {
         return id;

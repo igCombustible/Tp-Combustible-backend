@@ -34,6 +34,10 @@ public class TicketController {
 	public List <Ticket> getAllTicketsAceptados(){
 		return ticketService.findAllAceptados();}
 	
+	@GetMapping("/aceptados/{patente}")
+    public List<Ticket> getTicketAceptadosDelVehiculo(@PathVariable String patente) {
+        return ticketService.findAllAceptadosPorPatente(patente);
+	}
 	
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable String id) {

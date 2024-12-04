@@ -38,8 +38,8 @@ public class TicketService {
 	}	
 	
 	@Transactional(readOnly = true)
-	public List<Ticket> findAllAceptadosPorPatente(Vehiculo vehiculo) {
-	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
+	public List<Ticket> findAllAceptadosPorPatente(String patente) {
+	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo_Patente(EstadoDelTicket.ACEPTADO, patente);
 	    return todosLosTickets;
 	}	
 	

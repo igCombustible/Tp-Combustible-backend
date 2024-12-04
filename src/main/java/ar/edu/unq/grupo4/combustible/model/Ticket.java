@@ -3,6 +3,7 @@ package ar.edu.unq.grupo4.combustible.model;
 import java.util.Date;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -30,11 +31,12 @@ public class Ticket {
     
     @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "id_usuario")
-    @JsonIgnore
+    @JsonBackReference
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY) 
-    @JoinColumn(name = "patente") 
+    @JoinColumn(name = "patente")
+    @JsonBackReference
     private Vehiculo vehiculo;
     
     @Enumerated(EnumType.STRING)

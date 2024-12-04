@@ -15,9 +15,11 @@ import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 
 @Repository
 public interface VehiculoRepository extends JpaRepository<Vehiculo, String> {
-
+	
+	@EntityGraph(attributePaths = {"tickets.usuario"})
 	Optional<Vehiculo> findByPatente(String patente);
 	
+	@EntityGraph(attributePaths = {"tickets.usuario"})
 	List<Vehiculo> findByDeletedFalse();
 	
 	@EntityGraph(attributePaths = {"tickets.usuario"})
