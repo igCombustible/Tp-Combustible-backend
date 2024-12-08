@@ -3,17 +3,20 @@ package ar.edu.unq.grupo4.combustible.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.unq.grupo4.combustible.dto.InfoVehiculoDto;
 import ar.edu.unq.grupo4.combustible.dto.TicketDto;
 import ar.edu.unq.grupo4.combustible.model.EstadoDelTicket;
 import ar.edu.unq.grupo4.combustible.model.Ticket;
 import ar.edu.unq.grupo4.combustible.model.Usuario;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.TicketRepository;
+import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
 
 @Service
 public class TicketService {
@@ -22,10 +25,9 @@ public class TicketService {
 	@Autowired
 	private UserInfoService usuarioService;
 	@Autowired
-	private VehiculoService vehiculoService;
+	private VehiculoRepository vehiculoRepository;
 	@Autowired
-	private VehiculoService vehiculoRepository;
-	
+	private VehiculoService vehiculoService;
 	
 	@Transactional(readOnly = true)
 	public List<Ticket> findAllEspera(){
@@ -37,51 +39,24 @@ public class TicketService {
 	public List<Ticket> findAllAceptados(){
 		List<Ticket> todosLosTickets = ticketRepository.findByEstado(EstadoDelTicket.ACEPTADO);		
 		return todosLosTickets;
-	}	
+	}
+
 	
 	@Transactional(readOnly = true)
-	public List<Ticket> findAllAceptadosPorPatente(Vehiculo vehiculo) {
-	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
-	    return todosLosTickets;
-	}	
-	
-	@Transactional(readOnly = true)
-	public List<Ticket> findAllAceptadosPorPatente(String patente) {
-		Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
-		Vehiculo vehiculo = vehiculoOptional.get();
-	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
-	    return todosLosTickets;
-	}	
-	
-	@Transactional(readOnly = true)
-	public Double sumarCantidadDeSolicitudPorVehiculo(Vehiculo vehiculo) {
-	    List<Ticket> todosLosTickets = findAllAceptadosPorPatente(vehiculo);
-	    return todosLosTickets
-	    		.stream()
-	            .mapToDouble(Ticket::getCantidadDeSolicitud)
-	            .sum();
+	public InfoVehiculoDto infoDelVehiculo(String patente) {
+		List<Object[]> aceptados = ticketRepository.findCantidadConsumidaPorVehiculo(EstadoDelTicket.ACEPTADO, patente);
+		Object[] row = aceptados.get(0);
+		
+		String patenteVehiculo = (String) row[0]; 
+        String marca = (String) row[1];        
+        String modelo = (String) row[2];         
+        Integer ultimoKm = (Integer) row[3];      
+        Double cantidadConsumida = ((Number) row[4]).doubleValue();
+        
+     
+        return new InfoVehiculoDto(patenteVehiculo, marca, modelo, ultimoKm, cantidadConsumida);
 	}
 	
-	
-	public Double promedioKmPorConsumo(String patente) {
-	    Optional<Vehiculo> buscarVehiculo = vehiculoService.findByPatente(patente);
-	    
-	    if (buscarVehiculo.isPresent()) {
-	        Vehiculo vehiculo = buscarVehiculo.get();
-	        Double consumo = sumarCantidadDeSolicitudPorVehiculo(vehiculo);
-	        
-	        if (consumo != 0) {
-	            Double km = vehiculo.getUltimoValorConocidoKm().doubleValue();
-	            return km / consumo;
-	        } else {
-	            System.out.println("El consumo es cero, no se puede calcular el promedio.");
-	            return null;
-	        }
-	    } else {
-	        System.out.println("Vehículo no encontrado con la patente: " + patente);
-	        return null; 
-	    }
-	}
 	
 	public Optional<Ticket> getTicketById(String id) {
 	    return ticketRepository.findById(id);
@@ -126,4 +101,35 @@ public class TicketService {
 		this.ticketRepository.save(ticket.get());
 		return "se acepto el ticket";
 	}
-} 
+	
+	@Transactional
+	public List<InfoVehiculoDto> infoVehiculo(){
+		List<Object[]> resultados = ticketRepository.findCantidadConsumidaPorVehiculo(EstadoDelTicket.ACEPTADO);
+
+	    return resultados.stream().map(result -> {
+	        String patente = (String) result[0];
+	        String marca = (String) result[1];
+	        String modelo = (String) result[2];
+	        Integer km = (Integer) result[3];
+	        Double consumo = ((Number) result[4]).doubleValue(); // Conversión explícita de Long a Double
+
+	        return new InfoVehiculoDto(patente, marca, modelo, km, consumo);
+	    }).collect(Collectors.toList());
+	    } 
+	
+	@Transactional(readOnly = true)
+	public List<Ticket> findAllAceptadosPorPatente(Vehiculo vehiculo) {
+	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
+	    return todosLosTickets;
+	}	
+	
+	@Transactional(readOnly = true)
+	public List<Ticket> findAllAceptadosPorPatente(String patente) {
+		Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
+		Vehiculo vehiculo = vehiculoOptional.get();
+	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
+	    return todosLosTickets;
+	}	
+}
+	
+	

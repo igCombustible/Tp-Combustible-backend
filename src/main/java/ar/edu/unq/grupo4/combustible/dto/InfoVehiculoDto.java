@@ -2,16 +2,34 @@ package ar.edu.unq.grupo4.combustible.dto;
 
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 
-public class ConsumoDto {
+public class InfoVehiculoDto {
 	private String patente;
 	private String marca;
 	private String modelo;
 	private Integer km;
 	private Double consumo;
+	private Double kmPromedio;
 	
-	public ConsumoDto() {}
+	public InfoVehiculoDto (String patente, String marca, String modelo, Integer km , Double consumo) {
+		this.patente = patente;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.km = km;
+		this.consumo = consumo;
+		this.kmPromedio = km / consumo;
+	}
 	
-	public ConsumoDto(Vehiculo vehiculo, Double consumo) {
+	public Double getKmPromedio() {
+		return kmPromedio;
+	}
+
+	public void setKmPromedio(Double kmPromedio) {
+		this.kmPromedio = kmPromedio;
+	}
+
+	public InfoVehiculoDto() {}
+	
+	public InfoVehiculoDto(Vehiculo vehiculo, Double consumo) {
 		this.patente = vehiculo.getPatente();
 		this.marca = vehiculo.getMarca();
 		this.modelo = vehiculo.getModelo();

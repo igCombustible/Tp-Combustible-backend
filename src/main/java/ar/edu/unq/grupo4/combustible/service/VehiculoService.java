@@ -7,9 +7,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import ar.edu.unq.grupo4.combustible.dto.ConsumoDto;
-import ar.edu.unq.grupo4.combustible.dto.PromedioDto;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
@@ -20,8 +17,6 @@ import jakarta.transaction.Transactional;
 public class VehiculoService {
 	 	@Autowired
 	    private VehiculoRepository vehiculoRepository;
-	 	@Autowired
-	 	private TicketService ticketService;
 
 	    public List<Vehiculo> findAll() {
 	        return vehiculoRepository.findByDeletedFalse();
@@ -29,32 +24,6 @@ public class VehiculoService {
 
 	    public Optional<Vehiculo> findByPatente(String patente) {
 	        return vehiculoRepository.findByPatente(patente);
-	    }
-	    
-	    
-	    public ConsumoDto consumoVehiculo(String patente) {
-	    	Optional<Vehiculo> vehiculoOptional = vehiculoRepository.findByPatente(patente);
-	    	if (vehiculoOptional.isEmpty()) {
-	            throw new RuntimeException("Vehículo no encontrado para la patente: " + patente);
-	    	}
-	    	Vehiculo vehiculo = vehiculoOptional.get();
-	    	Double consumo = ticketService.sumarCantidadDeSolicitudPorVehiculo(vehiculo);
-	    	System.out.println("Se creo un ConsumoDto");
-	    	ConsumoDto consumoVehiculo = new ConsumoDto(vehiculo, consumo);
-	    	return consumoVehiculo;
-	    }
-	    
-	    public PromedioDto promedioVehiculo(String patente) {
-	    	ConsumoDto consumoDto = consumoVehiculo(patente);
-	    	Integer km = consumoDto.getKm();
-	    	if (km == null) {
-	            km = 0; // O maneja de otra manera el caso cuando km es null
-	        }
-	    	Double consumo = consumoDto.getConsumo();
-	    	Double promedio = (km/consumo);
-	    	Double numeroRedondeado = Math.round(promedio * 100.0) / 100.0;
-	    	PromedioDto promedioDto = new PromedioDto(consumoDto, numeroRedondeado);
-	    	return promedioDto;
 	    }
 	    
 	    @Transactional
