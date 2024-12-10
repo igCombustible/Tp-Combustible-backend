@@ -45,15 +45,20 @@ public class TicketService {
 	@Transactional(readOnly = true)
 	public InfoVehiculoDto infoDelVehiculo(String patente) {
 		List<Object[]> aceptados = ticketRepository.findCantidadConsumidaPorVehiculo(EstadoDelTicket.ACEPTADO, patente);
+		
 		Object[] row = aceptados.get(0);
 		
 		String patenteVehiculo = (String) row[0]; 
         String marca = (String) row[1];        
         String modelo = (String) row[2];         
-        Integer ultimoKm = (Integer) row[3];      
-        Double cantidadConsumida = ((Number) row[4]).doubleValue();
+        Integer ultimoKm = (Integer) row[3];
+        Double cantidadConsumida = null;
+        if (row[4] == null) {
+        	cantidadConsumida = 0.00;
+        }else {
+        	cantidadConsumida = ((Number) row[4]).doubleValue();
+        }
         
-     
         return new InfoVehiculoDto(patenteVehiculo, marca, modelo, ultimoKm, cantidadConsumida);
 	}
 	

@@ -25,17 +25,17 @@ public interface TicketRepository extends JpaRepository<Ticket, String>{
 	@EntityGraph(attributePaths = {"usuario.usuarioRoles.rol","vehiculo"})
     List<Ticket> findByEstado(EstadoDelTicket estado);
 	
-	@Query("SELECT t.vehiculo.patente, t.vehiculo.marca, t.vehiculo.modelo, t.vehiculo.ultimoValorConocidoKm, SUM(t.cantidadDeSolicitud) " +
+	@Query("SELECT t.vehiculo.patente, t.vehiculo.marca, t.vehiculo.modelo, t.vehiculo.ultimoValorConocidoKm, SUM(t.cantidadDeSolicitud)" +
 	           "FROM Ticket t " +
-	           "WHERE t.estado = :estado " +
+	           "WHERE t.estado = :estado AND t.vehiculo.deleted = false " +
 	           "GROUP BY t.vehiculo.patente, t.vehiculo.marca, t.vehiculo.modelo, t.vehiculo.ultimoValorConocidoKm")
 	List<Object[]> findCantidadConsumidaPorVehiculo(@Param("estado") EstadoDelTicket estado);
 	
-	@Query("SELECT t.vehiculo.patente, t.vehiculo.marca, t.vehiculo.modelo, t.vehiculo.ultimoValorConocidoKm, SUM(t.cantidadDeSolicitud) " +
-		       "FROM Ticket t " +
-		       "WHERE t.estado = :estado " +
-		       "AND t.vehiculo.patente = :patente " + 
-		       "GROUP BY t.vehiculo.patente, t.vehiculo.marca, t.vehiculo.modelo, t.vehiculo.ultimoValorConocidoKm")
+	@Query("SELECT v.marca, v.modelo, v.patente, v.ultimoValorConocidoKm, SUM(t.cantidadDeSolicitud) " +
+            "FROM Vehiculo v " +
+            "LEFT JOIN Ticket t ON v.patente = t.vehiculo.patente " +
+            "WHERE v.patente = :patente AND v.deleted = false AND (t.estado = :estado OR t.estado is NULL) " +
+            "GROUP BY v.marca, v.modelo, v.patente, v.ultimoValorConocidoKm")
 		List<Object[]> findCantidadConsumidaPorVehiculo(@Param("estado") EstadoDelTicket estado, @Param("patente") String patente);
 
 	
