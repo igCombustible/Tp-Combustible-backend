@@ -65,6 +65,26 @@ public class VehiculoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el vehículo");
         }
     }
+   
+    @GetMapping("/total-vehiculos")
+    public Integer getTotalVehiculos() {
+        List<Vehiculo> vehiculos = vehiculoService.findAll();
+        return vehiculos.size();
+    }
+  
+    @GetMapping("/total-kilometros")
+    public Integer getTotalKilometros() {
+        return vehiculoService.totalKilometros();
+    }
+
+    
+    @GetMapping("/total-combustible")
+    public Double getTotalCombustible() {
+        return vehiculoService.totalCombustible();
+    }
+
+    
+    
     
 }
     

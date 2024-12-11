@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ar.edu.unq.grupo4.combustible.dto.InfoVehiculoDto;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
 import ar.edu.unq.grupo4.combustible.repository.VehiculoRepository;
@@ -57,10 +59,28 @@ public class VehiculoService {
 			return vehiculoDto;
 			
 		}
+@Autowired TicketService ticketService;
 
-	}
+	    public Integer totalKilometros() {
+	 	        return vehiculoRepository.findByDeletedFalse()
+	 	                .stream()
+	 	                .mapToInt(Vehiculo::getUltimoValorConocidoKm)
+	 	                .sum();
+	 	    }
+
+	    
+	    public Double totalCombustible() {
+	        List<InfoVehiculoDto> infoVehiculos = ticketService.infoVehiculo();
+
+	        return infoVehiculos.stream()
+	                .mapToDouble(InfoVehiculoDto::getConsumo)
+	                .sum();
 	
-		
+
+
+}
+	
+}		
 	    
 	    
 
