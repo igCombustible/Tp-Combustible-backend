@@ -59,28 +59,35 @@ public class VehiculoService {
 			return vehiculoDto;
 			
 		}
-@Autowired TicketService ticketService;
+   @Autowired TicketService ticketService;
 
-	    public Integer totalKilometros() {
-	 	        return vehiculoRepository.findByDeletedFalse()
-	 	                .stream()
-	 	                .mapToInt(Vehiculo::getUltimoValorConocidoKm)
-	 	                .sum();
-	 	    }
 
-	    
-	    public Double totalCombustible() {
-	        List<InfoVehiculoDto> infoVehiculos = ticketService.infoVehiculo();
-
-	        return infoVehiculos.stream()
-	                .mapToDouble(InfoVehiculoDto::getConsumo)
-	                .sum();
-	
+     
+     public Integer getTotalVehiculos() {
+       return vehiculoRepository.getTotalVehiculos();
+}
+  
+     public Integer totalKilometros() {
+      return vehiculoRepository.getTotalKilometros();
+}
 
 
 }
 	
-}		
+//	    public Integer totalKilometros() {
+//	 	        return vehiculoRepository.findByDeletedFalse()
+//	 	                .stream()
+//	 	                .mapToInt(Vehiculo::getUltimoValorConocidoKm)
+//	 	                .sum();
+//	 	    }
+//
+//	    
+//	    public Double totalCombustible() {
+//	        List<InfoVehiculoDto> infoVehiculos = ticketService.infoVehiculo();
+//                   return infoVehiculos.stream()
+//	                .mapToDouble(InfoVehiculoDto::getConsumo)
+//	                .sum();
+		
 	    
 	    
 

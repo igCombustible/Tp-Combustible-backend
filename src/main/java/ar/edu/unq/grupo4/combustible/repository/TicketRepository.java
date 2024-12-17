@@ -38,6 +38,12 @@ public interface TicketRepository extends JpaRepository<Ticket, String>{
             "GROUP BY v.marca, v.modelo, v.patente, v.ultimoValorConocidoKm")
 		List<Object[]> findCantidadConsumidaPorVehiculo(@Param("estado") EstadoDelTicket estado, @Param("patente") String patente);
 
+		
+		
+		
+		
+		 @Query("SELECT SUM(t.cantidadDeSolicitud) FROM Ticket t")
+		    Double getTotalCombustible();	
 	
 }
 
