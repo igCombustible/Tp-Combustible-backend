@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ar.edu.unq.grupo4.combustible.dto.VehiculoDto;
 import ar.edu.unq.grupo4.combustible.model.Vehiculo;
+import ar.edu.unq.grupo4.combustible.service.TicketService;
 import ar.edu.unq.grupo4.combustible.service.VehiculoService;
 
 
@@ -25,6 +26,8 @@ import ar.edu.unq.grupo4.combustible.service.VehiculoService;
 public class VehiculoController {
 	@Autowired
 	private VehiculoService vehiculoService;
+	@Autowired
+	private TicketService ticketService;
 	
 	@GetMapping()
     public List<Vehiculo> getAllVehiculos() {
@@ -68,8 +71,7 @@ public class VehiculoController {
    
     @GetMapping("/total-vehiculos")
     public Integer getTotalVehiculos() {
-        List<Vehiculo> vehiculos = vehiculoService.findAll();
-        return vehiculos.size();
+        return vehiculoService.getTotalVehiculos();
     }
   
     @GetMapping("/total-kilometros")
@@ -80,7 +82,7 @@ public class VehiculoController {
     
     @GetMapping("/total-combustible")
     public Double getTotalCombustible() {
-        return vehiculoService.totalCombustible();
+        return ticketService.totalCombustible();
     }
 
     

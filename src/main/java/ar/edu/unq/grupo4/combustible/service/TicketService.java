@@ -135,6 +135,11 @@ public class TicketService {
 	    List<Ticket> todosLosTickets = ticketRepository.findByEstadoAndVehiculo(EstadoDelTicket.ACEPTADO, vehiculo);
 	    return todosLosTickets;
 	}	
+
+	 public Double totalCombustible() {
+	        return ticketRepository.getTotalCombustible();
+	 }
+
 }
 	
 	
